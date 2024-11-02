@@ -34,7 +34,10 @@
       >
         Scope 1 - Fugitive Emission (Fire Extinguisher Leakage)
       </button>
-      <button @click="currentView = ''" :class="buttonClass('Electricity')">
+      <button
+        @click="currentView = 'PurchasedElectricity'"
+        :class="buttonClass('Electricity')"
+      >
         Scope 2 - Electricity
       </button>
     </div>
@@ -50,6 +53,7 @@ import MobileCombustion from "./ScopeComponents/ScopeMobileCombustion.vue";
 // import FugitiveEmissionAC from "./ScopeComponents/FugitiveEmissionAC.vue";
 import FugitiveEmissionFireExt from "./ScopeComponents/FugitiveEmissionFireExt.vue";
 import FugitiveEmissionFireExtLeak from "./ScopeComponents/FugitiveEmissionFireExtLeak.vue";
+import PurchasedElectricity from "./ScopeComponents/Electricity.vue";
 
 export default {
   name: "Dashboard",
@@ -59,6 +63,7 @@ export default {
     // FugitiveEmissionAC,
     FugitiveEmissionFireExt,
     FugitiveEmissionFireExtLeak,
+    PurchasedElectricity,
   },
   data() {
     return {
