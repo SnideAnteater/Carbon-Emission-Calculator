@@ -48,7 +48,7 @@
 import StationaryCombustion from "./ScopeComponents/ScopeStionaryCombustion.vue";
 import MobileCombustion from "./ScopeComponents/ScopeMobileCombustion.vue";
 // import FugitiveEmissionAC from "./ScopeComponents/FugitiveEmissionAC.vue";
-import FugitiveEmissionFireExtLeak from "./ScopeComponents/FugitiveEmissionFireExt.vue";
+import FugitiveEmissionFireExt from "./ScopeComponents/FugitiveEmissionFireExt.vue";
 import FugitiveEmissionFireExtLeak from "./ScopeComponents/FugitiveEmissionFireExtLeak.vue";
 
 export default {
