@@ -31,12 +31,6 @@
           <!-- Diesel -->
           <th class="px-4 py-2">Diesel (litres)</th>
           <th class="px-4 py-2">Diesel (TJ)</th>
-          <!-- LPG -->
-          <th class="px-4 py-2">LPG (litres)</th>
-          <th class="px-4 py-2">LPG (TJ)</th>
-          <!-- Natural Gas -->
-          <th class="px-4 py-2">Natural Gas (mmbtu)</th>
-          <th class="px-4 py-2">Natural Gas (TJ)</th>
         </tr>
       </thead>
       <tbody class="divide-y divide-gray-200">
@@ -53,7 +47,7 @@
             />
           </td>
           <td class="px-4 py-2">
-            {{ Math.round(row.petrolTJ * 100) / 100 }}
+            {{ Math.round(row.petrolTJ * 1000) / 1000 }}
           </td>
           <!-- Diesel -->
           <td class="px-4 py-2">
@@ -64,27 +58,7 @@
             />
           </td>
           <td class="px-4 py-2">
-            {{ Math.round(row.dieselTJ * 100) / 100 }}
-          </td>
-          <!-- LPG -->
-          <td class="px-4 py-2">
-            <input
-              type="number"
-              class="w-full border rounded-lg px-2 py-1 text-gray-700"
-              v-model="row.lpgLitres"
-            />
-          </td>
-          <td class="px-4 py-2">{{ Math.round(row.lpgTJ * 100) / 100 }}</td>
-          <!-- Natural Gas -->
-          <td class="px-4 py-2">
-            <input
-              type="number"
-              class="w-full border rounded-lg px-2 py-1 text-gray-700"
-              v-model="row.naturalGasMMBTU"
-            />
-          </td>
-          <td class="px-4 py-2">
-            {{ Math.round(row.naturalGasTJ * 100) / 100 }}
+            {{ Math.round(row.dieselTJ * 1000) / 1000 }}
           </td>
         </tr>
       </tbody>
@@ -114,16 +88,16 @@
           <td class="px-4 py-2">{{ row.equipment }}</td>
           <!-- Petrol -->
           <td class="px-4 py-2">
-            {{ Math.round(row.petrolkgCO2 * 100) / 100 }}
+            {{ Math.round(row.petrolkgCO2 * 1000) / 1000 }}
           </td>
           <td class="px-4 py-2">
-            {{ Math.round(row.petrolkgCH4 * 100) / 100 }}
+            {{ Math.round(row.petrolkgCH4 * 1000) / 1000 }}
           </td>
           <td class="px-4 py-2">
-            {{ Math.round(row.petrolkgN2O * 100) / 100 }}
+            {{ Math.round(row.petrolkgN2O * 1000) / 1000 }}
           </td>
           <td class="px-4 py-2">
-            {{ Math.round(row.petrolkgCO2eq * 100) / 100 }}
+            {{ Math.round(row.petrolkgCO2eq * 1000) / 1000 }}
           </td>
         </tr>
         <tr>
@@ -132,16 +106,16 @@
           <td class="px-4 py-2">SUM</td>
           <!-- Petrol -->
           <td class="px-4 py-2">
-            {{ Math.round(sumPetrolkgco2 * 100) / 100 }}
+            {{ Math.round(sumPetrolkgco2 * 1000) / 1000 }}
           </td>
           <td class="px-4 py-2">
-            {{ Math.round(sumPetrolkgCH4 * 100) / 100 }}
+            {{ Math.round(sumPetrolkgCH4 * 1000) / 1000 }}
           </td>
           <td class="px-4 py-2">
-            {{ Math.round(sumPetrolkgN2O * 100) / 100 }}
+            {{ Math.round(sumPetrolkgN2O * 1000) / 1000 }}
           </td>
           <td class="px-4 py-2">
-            {{ Math.round(sumPetrolkgCO2eq * 100) / 100 }}
+            {{ Math.round(sumPetrolkgCO2eq * 1000) / 1000 }}
           </td>
         </tr>
       </tbody>
@@ -171,73 +145,16 @@
           <td class="px-4 py-2">{{ row.equipment }}</td>
           <!-- Petrol -->
           <td class="px-4 py-2">
-            {{ Math.round(row.dieselkgCO2 * 100) / 100 }}
+            {{ Math.round(row.dieselkgCO2 * 1000) / 1000 }}
           </td>
           <td class="px-4 py-2">
-            {{ Math.round(row.dieselkgCH4 * 100) / 100 }}
+            {{ Math.round(row.dieselkgCH4 * 1000) / 1000 }}
           </td>
           <td class="px-4 py-2">
-            {{ Math.round(row.dieselkgN2O * 100) / 100 }}
+            {{ Math.round(row.dieselkgN2O * 1000) / 1000 }}
           </td>
           <td class="px-4 py-2">
-            {{ Math.round(row.dieselkgCO2eq * 100) / 100 }}
-          </td>
-        </tr>
-        <tr>
-          <td class="px-4 py-2"></td>
-          <td class="px-4 py-2"></td>
-          <td class="px-4 py-2">SUM</td>
-          <!-- Petrol -->
-          <td class="px-4 py-2">
-            {{ Math.round(sumDieselkgco2 * 100) / 100 }}
-          </td>
-          <td class="px-4 py-2">
-            {{ Math.round(sumDieselkgCH4 * 100) / 100 }}
-          </td>
-          <td class="px-4 py-2">
-            {{ Math.round(sumDieselkgN2O * 100) / 100 }}
-          </td>
-          <td class="px-4 py-2">
-            {{ Math.round(sumDieselkgCO2eq * 100) / 100 }}
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-
-  <div class="py-5">
-    <h1 class="text-2xl font-bold my-4">LPG Emissions</h1>
-
-    <table class="min-w-full text-left text-sm">
-      <thead class="bg-gray-100 text-xs uppercase">
-        <tr>
-          <th class="px-4 py-2">Month</th>
-          <th class="px-4 py-2">Sites</th>
-          <th class="px-4 py-2">Type of Equipment</th>
-          <!-- Petrol -->
-          <th class="px-4 py-2">LPG (kgCO2)</th>
-          <th class="px-4 py-2">LPG (kgCH4)</th>
-          <th class="px-4 py-2">LPG (kgN2O)</th>
-          <th class="px-4 py-2">LPG (kgCO2eq)</th>
-        </tr>
-      </thead>
-      <tbody class="divide-y divide-gray-200">
-        <tr v-for="(row, index) in tableData" :key="index">
-          <td class="px-4 py-2">{{ row.month }}</td>
-          <td class="px-4 py-2">{{ row.sites }}</td>
-          <td class="px-4 py-2">{{ row.equipment }}</td>
-          <!-- Petrol -->
-          <td class="px-4 py-2">
-            {{ Math.round(row.lpgkgCO2 * 100) / 100 }}
-          </td>
-          <td class="px-4 py-2">
-            {{ Math.round(row.lpgkgCH4 * 100) / 100 }}
-          </td>
-          <td class="px-4 py-2">
-            {{ Math.round(row.lpgkgN2O * 100) / 100 }}
-          </td>
-          <td class="px-4 py-2">
-            {{ Math.round(row.lpgkgCO2eq * 100) / 100 }}
+            {{ Math.round(row.dieselkgCO2eq * 1000) / 1000 }}
           </td>
         </tr>
         <tr>
@@ -246,73 +163,16 @@
           <td class="px-4 py-2">SUM</td>
           <!-- Petrol -->
           <td class="px-4 py-2">
-            {{ Math.round(sumLPGkgco2 * 100) / 100 }}
+            {{ Math.round(sumDieselkgco2 * 1000) / 1000 }}
           </td>
           <td class="px-4 py-2">
-            {{ Math.round(sumLPGkgCH4 * 100) / 100 }}
+            {{ Math.round(sumDieselkgCH4 * 1000) / 1000 }}
           </td>
           <td class="px-4 py-2">
-            {{ Math.round(sumLPGkgN2O * 100) / 100 }}
+            {{ Math.round(sumDieselkgN2O * 1000) / 1000 }}
           </td>
           <td class="px-4 py-2">
-            {{ Math.round(sumLPGkgCO2eq * 100) / 100 }}
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-
-  <div class="py-5">
-    <h1 class="text-2xl font-bold my-4">Natural Gas Emissions</h1>
-
-    <table class="min-w-full text-left text-sm">
-      <thead class="bg-gray-100 text-xs uppercase">
-        <tr>
-          <th class="px-4 py-2">Month</th>
-          <th class="px-4 py-2">Sites</th>
-          <th class="px-4 py-2">Type of Equipment</th>
-          <!-- Petrol -->
-          <th class="px-4 py-2">Natural Gas (kgCO2)</th>
-          <th class="px-4 py-2">Natural Gas (kgCH4)</th>
-          <th class="px-4 py-2">Natural Gas (kgN2O)</th>
-          <th class="px-4 py-2">Natural Gas (kgCO2eq)</th>
-        </tr>
-      </thead>
-      <tbody class="divide-y divide-gray-200">
-        <tr v-for="(row, index) in tableData" :key="index">
-          <td class="px-4 py-2">{{ row.month }}</td>
-          <td class="px-4 py-2">{{ row.sites }}</td>
-          <td class="px-4 py-2">{{ row.equipment }}</td>
-          <!-- Petrol -->
-          <td class="px-4 py-2">
-            {{ Math.round(row.naturalGaskgCO2 * 100) / 100 }}
-          </td>
-          <td class="px-4 py-2">
-            {{ Math.round(row.naturalGaskgCH4 * 100) / 100 }}
-          </td>
-          <td class="px-4 py-2">
-            {{ Math.round(row.naturalGaskgN2O * 100) / 100 }}
-          </td>
-          <td class="px-4 py-2">
-            {{ Math.round(row.naturalGaskgCO2eq * 100) / 100 }}
-          </td>
-        </tr>
-        <tr>
-          <td class="px-4 py-2"></td>
-          <td class="px-4 py-2"></td>
-          <td class="px-4 py-2">SUM</td>
-          <!-- Petrol -->
-          <td class="px-4 py-2">
-            {{ Math.round(sumNGkgco2 * 100) / 100 }}
-          </td>
-          <td class="px-4 py-2">
-            {{ Math.round(sumNGkgCH4 * 100) / 100 }}
-          </td>
-          <td class="px-4 py-2">
-            {{ Math.round(sumNGkgN2O * 100) / 100 }}
-          </td>
-          <td class="px-4 py-2">
-            {{ Math.round(sumNGkgCO2eq * 100) / 100 }}
+            {{ Math.round(sumDieselkgCO2eq * 1000) / 1000 }}
           </td>
         </tr>
       </tbody>
@@ -342,16 +202,16 @@
           <td class="px-4 py-2">{{ row.equipment }}</td>
           <!-- Petrol -->
           <td class="px-4 py-2">
-            {{ Math.round(row.kgCO2 * 100) / 100 }}
+            {{ Math.round(row.kgCO2 * 1000) / 1000 }}
           </td>
           <td class="px-4 py-2">
-            {{ Math.round(row.kgCH4 * 100) / 100 }}
+            {{ Math.round(row.kgCH4 * 1000) / 1000 }}
           </td>
           <td class="px-4 py-2">
-            {{ Math.round(row.kgN20 * 100) / 100 }}
+            {{ Math.round(row.kgN20 * 1000) / 1000 }}
           </td>
           <td class="px-4 py-2">
-            {{ Math.round(row.kgCO2Eq * 100) / 100 }}
+            {{ Math.round(row.kgCO2Eq * 1000) / 1000 }}
           </td>
         </tr>
         <tr>
@@ -360,16 +220,16 @@
           <td class="px-4 py-2">SUM</td>
           <!-- Petrol -->
           <td class="px-4 py-2">
-            {{ Math.round(sumKgCO2 * 100) / 100 }}
+            {{ Math.round(sumKgCO2 * 1000) / 1000 }}
           </td>
           <td class="px-4 py-2">
-            {{ Math.round(sumKgCH4 * 100) / 100 }}
+            {{ Math.round(sumKgCH4 * 1000) / 1000 }}
           </td>
           <td class="px-4 py-2">
-            {{ Math.round(sumKgN20 * 100) / 100 }}
+            {{ Math.round(sumKgN20 * 1000) / 1000 }}
           </td>
           <td class="px-4 py-2">
-            {{ Math.round(sumKgC02Eq * 100) / 100 }}
+            {{ Math.round(sumKgC02Eq * 1000) / 1000 }}
           </td>
         </tr>
       </tbody>
@@ -379,7 +239,7 @@
 
 <script>
 export default {
-  name: "StationaryCombustion",
+  name: "MobileCombustion",
   data() {
     return {
       tableData: [
@@ -808,8 +668,8 @@ export default {
         // PETROL DATA
         this.tableData[i].petrolTJ = this.tableData[i].petrolLitres * 0.0000277;
         this.tableData[i].petrolkgCO2 = this.tableData[i].petrolTJ * 69300;
-        this.tableData[i].petrolkgCH4 = this.tableData[i].petrolTJ * 3;
-        this.tableData[i].petrolkgN2O = this.tableData[i].petrolTJ * 0.6;
+        this.tableData[i].petrolkgCH4 = this.tableData[i].petrolTJ * 25;
+        this.tableData[i].petrolkgN2O = this.tableData[i].petrolTJ * 8;
         this.tableData[i].petrolkgCO2eq =
           this.tableData[i].petrolkgCO2 * 1 +
           this.tableData[i].petrolkgCH4 * 28 +
@@ -826,8 +686,8 @@ export default {
         // Diesel Data
         this.tableData[i].dieselTJ = this.tableData[i].dieselLitres * 0.000037;
         this.tableData[i].dieselkgCO2 = this.tableData[i].dieselTJ * 74100;
-        this.tableData[i].dieselkgCH4 = this.tableData[i].dieselTJ * 3;
-        this.tableData[i].dieselkgN2O = this.tableData[i].dieselTJ * 0.6;
+        this.tableData[i].dieselkgCH4 = this.tableData[i].dieselTJ * 3.9;
+        this.tableData[i].dieselkgN2O = this.tableData[i].dieselTJ * 3.9;
         this.tableData[i].dieselkgCO2eq =
           this.tableData[i].dieselkgCO2 * 1 +
           this.tableData[i].dieselkgCH4 * 28 +
@@ -841,61 +701,17 @@ export default {
         this.sumDieselkgCO2eq =
           this.sumDieselkgCO2eq + this.tableData[i].dieselkgCO2eq;
 
-        // LPG Data
-        this.tableData[i].lpgTJ = this.tableData[i].lpgLitres * 0.0000246;
-        this.tableData[i].lpgkgCO2 = this.tableData[i].lpgTJ * 63100;
-        this.tableData[i].lpgkgCH4 = this.tableData[i].lpgTJ * 1;
-        this.tableData[i].lpgkgN2O = this.tableData[i].lpgTJ * 0.1;
-        this.tableData[i].lpgkgCO2eq =
-          this.tableData[i].lpgkgCO2 * 1 +
-          this.tableData[i].lpgkgCH4 * 28 +
-          this.tableData[i].lpgkgN2O * 265;
-        this.sumLPGkgco2 = this.sumLPGkgco2 + this.tableData[i].lpgkgCO2;
-        this.sumLPGkgCH4 = this.sumLPGkgCH4 + this.tableData[i].lpgkgCH4;
-        this.sumLPGkgN2O = this.sumLPGkgN2O + this.tableData[i].lpgkgN2O;
-        this.sumLPGkgCO2eq = this.sumLPGkgCO2eq + this.tableData[i].lpgkgCO2eq;
-
-        // Natural Gas Data
-        this.tableData[i].naturalGasTJ =
-          this.tableData[i].naturalGasMMBTU * 0.0010552;
-        this.tableData[i].naturalGaskgCO2 =
-          this.tableData[i].naturalGasTJ * 56100;
-        this.tableData[i].naturalGaskgCH4 = this.tableData[i].naturalGasTJ * 1;
-        this.tableData[i].naturalGaskgN2O =
-          this.tableData[i].naturalGasTJ * 0.1;
-        this.tableData[i].naturalGaskgCO2eq =
-          this.tableData[i].naturalGaskgCO2 * 1 +
-          this.tableData[i].naturalGaskgCH4 * 28 +
-          this.tableData[i].naturalGaskgN2O * 265;
-        this.sumNGkgN2O = this.sumNGkgN2O + this.tableData[i].naturalGaskgCO2;
-        this.sumNGkgCH4 = this.sumNGkgCH4 + this.tableData[i].naturalGaskgCH4;
-        this.sumNGkgN2O = this.sumNGkgN2O + this.tableData[i].naturalGaskgN2O;
-        this.sumNGkgCO2eq =
-          this.sumNGkgCO2eq + this.tableData[i].naturalGaskgCO2eq;
-
         this.tableData[i].kgCO2 =
-          this.tableData[i].petrolkgCO2 +
-          this.tableData[i].dieselkgCO2 +
-          this.tableData[i].lpgkgCO2 +
-          this.tableData[i].naturalGaskgCO2;
+          this.tableData[i].petrolkgCO2 + this.tableData[i].dieselkgCO2;
 
         this.tableData[i].kgCH4 =
-          this.tableData[i].petrolkgCH4 +
-          this.tableData[i].dieselkgCH4 +
-          this.tableData[i].lpgkgCH4 +
-          this.tableData[i].naturalGaskgCH4;
+          this.tableData[i].petrolkgCH4 + this.tableData[i].dieselkgCH4;
 
         this.tableData[i].kgN20 =
-          this.tableData[i].petrolkgN2O +
-          this.tableData[i].dieselkgN2O +
-          this.tableData[i].lpgkgN2O +
-          this.tableData[i].naturalGaskgN2O;
+          this.tableData[i].petrolkgN2O + this.tableData[i].dieselkgN2O;
 
         this.tableData[i].kgCO2Eq =
-          this.tableData[i].petrolkgCO2eq +
-          this.tableData[i].dieselkgCO2eq +
-          this.tableData[i].lpgkgCO2eq +
-          this.tableData[i].naturalGaskgCO2eq;
+          this.tableData[i].petrolkgCO2eq + this.tableData[i].dieselkgCO2eq;
 
         this.sumKgCO2 = this.sumKgCO2 + this.tableData[i].kgCO2;
         this.sumKgCH4 = this.sumDieselkgCH4 + this.tableData[i].kgCH4;

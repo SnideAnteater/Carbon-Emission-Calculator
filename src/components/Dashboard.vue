@@ -4,39 +4,74 @@
 
     <!-- Navigation Links for Categories -->
     <div class="flex space-x-4">
-      <router-link
-        to="/stationary-combustion"
-        class="text-sm font-medium text-gray-500 hover:text-blue-500"
+      <button
+        @click="currentView = 'StationaryCombustion'"
+        :class="buttonClass('StationaryCombustion')"
       >
         Scope 1 - Stationary Combustion
-      </router-link>
-      <router-link
-        to="/mobile-combustion"
-        class="text-sm font-medium text-gray-500 hover:text-blue-500"
+      </button>
+      <button
+        @click="currentView = 'MobileCombustion'"
+        :class="buttonClass('MobileCombustion')"
       >
         Scope 1 - Mobile Combustion
-      </router-link>
-      <router-link
-        to="/fugitive-emission-ac"
-        class="text-sm font-medium text-gray-500 hover:text-blue-500"
+      </button>
+      <button
+        @click="currentView = ''"
+        :class="buttonClass('FugitiveEmissionAC')"
       >
         Scope 1 - Fugitive Emission (Air Conditioner)
-      </router-link>
-      <router-link
-        to="/fugitive-emission-fire-ext"
-        class="text-sm font-medium text-gray-500 hover:text-blue-500"
+      </button>
+      <button
+        @click="currentView = ''"
+        :class="buttonClass('FugitiveEmissionFireExt')"
       >
         Scope 1 - Fugitive Emission (Fire Extinguisher)
-      </router-link>
+      </button>
     </div>
 
     <!-- Display Selected Component -->
-    <router-view class="mt-6"></router-view>
+    <component :is="currentView" class="mt-6"></component>
   </div>
 </template>
 
 <script>
+import StationaryCombustion from "./ScopeComponents/ScopeStionaryCombustion.vue";
+import MobileCombustion from "./ScopeComponents/ScopeMobileCombustion.vue";
+// import FugitiveEmissionAC from "./FugitiveEmissionAC.vue";
+// import FugitiveEmissionFireExt from "./FugitiveEmissionFireExt.vue";
+
 export default {
   name: "Dashboard",
+  components: {
+    StationaryCombustion,
+    MobileCombustion,
+    // FugitiveEmissionAC,
+    // FugitiveEmissionFireExt,
+  },
+  data() {
+    return {
+      currentView: "StationaryCombustion",
+    };
+  },
+  methods: {
+    buttonClass(view) {
+      return {
+        "text-blue-500 font-semibold border-b-2 border-blue-500":
+          this.currentView === view,
+        "text-gray-500 hover:text-blue-500": this.currentView !== view,
+      };
+    },
+  },
 };
 </script>
+
+<style scoped>
+button {
+  padding: 0.5rem 1rem;
+  border: none;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: color 0.3s, border-color 0.3s;
+}
+</style>

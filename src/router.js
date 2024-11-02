@@ -1,11 +1,11 @@
 import { createRouter, createWebHistory } from "vue-router";
-import StationaryCombustion from "./components/ScopeStionaryCombustion.vue";
+import StationaryCombustion from "./components/ScopeComponents/ScopeStionaryCombustion.vue";
 // import MobileCombustion from "@/components/MobileCombustion.vue";
 // import FugitiveEmissionAC from "@/components/FugitiveEmissionAC.vue";
 // import FugitiveEmissionFireExt from "@/components/FugitiveEmissionFireExt.vue";
 
 const routes = [
-  { path: "/", redirect: "/stationary-combustion" }, // Redirect to a default category
+  { path: "/" }, // Redirect to a default category
   { path: "/stationary-combustion", component: StationaryCombustion },
   //   { path: "/mobile-combustion", component: MobileCombustion },
   //   { path: "/fugitive-emission-ac", component: FugitiveEmissionAC },
