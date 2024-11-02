@@ -246,7 +246,7 @@ export default {
         {
           month: "Jan",
           sites: "HQ",
-          equipment: "Generators",
+          equipment: "Owned Car",
           petrolLitres: 0,
           petrolTJ: 0,
           petrolkgCO2: 0,
@@ -279,7 +279,7 @@ export default {
         {
           month: "Feb",
           sites: "HQ",
-          equipment: "Generators",
+          equipment: "Owned Car",
           petrolLitres: 0,
           petrolTJ: 0,
           petrolkgCO2: 0,
@@ -312,7 +312,7 @@ export default {
         {
           month: "Mar",
           sites: "HQ",
-          equipment: "Generators",
+          equipment: "Owned Car",
           petrolLitres: 0,
           petrolTJ: 0,
           petrolkgCO2: 0,
@@ -345,7 +345,7 @@ export default {
         {
           month: "Apr",
           sites: "HQ",
-          equipment: "Generators",
+          equipment: "Owned Car",
           petrolLitres: 0,
           petrolTJ: 0,
           petrolkgCO2: 0,
@@ -378,7 +378,7 @@ export default {
         {
           month: "May",
           sites: "HQ",
-          equipment: "Generators",
+          equipment: "Owned Car",
           petrolLitres: 0,
           petrolTJ: 0,
           petrolkgCO2: 0,
@@ -411,7 +411,7 @@ export default {
         {
           month: "June",
           sites: "HQ",
-          equipment: "Generators",
+          equipment: "Owned Car",
           petrolLitres: 0,
           petrolTJ: 0,
           petrolkgCO2: 0,
@@ -444,7 +444,7 @@ export default {
         {
           month: "July",
           sites: "HQ",
-          equipment: "Generators",
+          equipment: "Owned Car",
           petrolLitres: 0,
           petrolTJ: 0,
           petrolkgCO2: 0,
@@ -477,7 +477,7 @@ export default {
         {
           month: "Aug",
           sites: "HQ",
-          equipment: "Generators",
+          equipment: "Owned Car",
           petrolLitres: 0,
           petrolTJ: 0,
           petrolkgCO2: 0,
@@ -510,7 +510,7 @@ export default {
         {
           month: "Sep",
           sites: "HQ",
-          equipment: "Generators",
+          equipment: "Owned Car",
           petrolLitres: 0,
           petrolTJ: 0,
           petrolkgCO2: 0,
@@ -543,7 +543,7 @@ export default {
         {
           month: "Oct",
           sites: "HQ",
-          equipment: "Generators",
+          equipment: "Owned Car",
           petrolLitres: 0,
           petrolTJ: 0,
           petrolkgCO2: 0,
@@ -576,7 +576,7 @@ export default {
         {
           month: "Nov",
           sites: "HQ",
-          equipment: "Generators",
+          equipment: "Owned Car",
           petrolLitres: 0,
           petrolTJ: 0,
           petrolkgCO2: 0,
@@ -609,7 +609,7 @@ export default {
         {
           month: "Dec",
           sites: "HQ",
-          equipment: "Generators",
+          equipment: "Owned Car",
           petrolLitres: 0,
           petrolTJ: 0,
           petrolkgCO2: 0,

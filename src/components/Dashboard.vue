@@ -23,7 +23,7 @@
         Scope 1 - Fugitive Emission (Air Conditioner)
       </button>
       <button
-        @click="currentView = ''"
+        @click="currentView = 'FugitiveEmissionFireExt'"
         :class="buttonClass('FugitiveEmissionFireExt')"
       >
         Scope 1 - Fugitive Emission (Fire Extinguisher)
@@ -38,8 +38,8 @@
 <script>
 import StationaryCombustion from "./ScopeComponents/ScopeStionaryCombustion.vue";
 import MobileCombustion from "./ScopeComponents/ScopeMobileCombustion.vue";
-// import FugitiveEmissionAC from "./FugitiveEmissionAC.vue";
-// import FugitiveEmissionFireExt from "./FugitiveEmissionFireExt.vue";
+// import FugitiveEmissionAC from "./ScopeComponents/FugitiveEmissionAC.vue";
+import FugitiveEmissionFireExt from "./ScopeComponents/FugitiveEmissionFireExt.vue";
 
 export default {
   name: "Dashboard",
@@ -47,7 +47,7 @@ export default {
     StationaryCombustion,
     MobileCombustion,
     // FugitiveEmissionAC,
-    // FugitiveEmissionFireExt,
+    FugitiveEmissionFireExt,
   },
   data() {
     return {
