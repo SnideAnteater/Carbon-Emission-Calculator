@@ -206,7 +206,7 @@
 
 <script>
 export default {
-  name: "FugitiveEmissionFireExt",
+  name: "FugitiveEmissionFireExtLeak",
   data() {
     return {
       tableData: [
@@ -449,19 +449,20 @@ export default {
         this.tableData[i].totalCapacityFixedCO2 =
           this.tableData[i].capacityFixedCO2 * this.tableData[i].unitFixedCO2;
         this.tableData[i].emissionsFixedCO2 =
-          this.tableData[i].totalCapacityFixedCO2 * 1;
+          this.tableData[i].totalCapacityFixedCO2 * 1 * (2.5 / 100);
 
         // Fixed HFC-227ea
         this.tableData[i].totalHFC =
           this.tableData[i].capacityHFC * this.tableData[i].unitHFC;
-        this.tableData[i].emissionsHFC = this.tableData[i].totalHFC * 3350;
+        this.tableData[i].emissionsHFC =
+          this.tableData[i].totalHFC * 3350 * (2.5 / 100);
 
         // Portable CO2
         this.tableData[i].totalCapacityPortableCO2 =
           this.tableData[i].capacityPortableCO2 *
           this.tableData[i].unitPortableCO2;
         this.tableData[i].emissionsPortableCO2 =
-          this.tableData[i].totalCapacityPortableCO2 * 1;
+          this.tableData[i].totalCapacityPortableCO2 * 1 * (3.5 / 100);
 
         //  Total
         this.tableData[i].totalEmissionFixed =
