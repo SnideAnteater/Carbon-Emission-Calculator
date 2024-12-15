@@ -1,6 +1,6 @@
 <template>
   <!-- Button -->
-  <button
+  <!-- <button
     @click="calculateFuelConsumption()"
     id="calculateFuelConsumption"
     class="group relative inline-block focus:outline-none focus:ring"
@@ -14,7 +14,7 @@
     >
       Calculate
     </span>
-  </button>
+  </button> -->
 
   <div class="py-5">
     <h1 class="text-2xl font-bold my-4">Fuel Information</h1>
@@ -106,16 +106,16 @@
           <td class="px-4 py-2">SUM</td>
           <!-- Petrol -->
           <td class="px-4 py-2">
-            {{ Math.round(sumPetrolkgco2 * 1000) / 1000 }}
+            {{ Math.round(sums.petrol.kgCO2 * 1000) / 1000 }}
           </td>
           <td class="px-4 py-2">
-            {{ Math.round(sumPetrolkgCH4 * 1000) / 1000 }}
+            {{ Math.round(sums.petrol.kgCH4 * 1000) / 1000 }}
           </td>
           <td class="px-4 py-2">
-            {{ Math.round(sumPetrolkgN2O * 1000) / 1000 }}
+            {{ Math.round(sums.petrol.kgN2O * 1000) / 1000 }}
           </td>
           <td class="px-4 py-2">
-            {{ Math.round(sumPetrolkgCO2eq * 1000) / 1000 }}
+            {{ Math.round(sums.petrol.kgCO2eq * 1000) / 1000 }}
           </td>
         </tr>
       </tbody>
@@ -163,16 +163,16 @@
           <td class="px-4 py-2">SUM</td>
           <!-- Petrol -->
           <td class="px-4 py-2">
-            {{ Math.round(sumDieselkgco2 * 1000) / 1000 }}
+            {{ Math.round(sums.diesel.kgCO2 * 1000) / 1000 }}
           </td>
           <td class="px-4 py-2">
-            {{ Math.round(sumDieselkgCH4 * 1000) / 1000 }}
+            {{ Math.round(sums.diesel.kgCH4 * 1000) / 1000 }}
           </td>
           <td class="px-4 py-2">
-            {{ Math.round(sumDieselkgN2O * 1000) / 1000 }}
+            {{ Math.round(sums.diesel.kgN2O * 1000) / 1000 }}
           </td>
           <td class="px-4 py-2">
-            {{ Math.round(sumDieselkgCO2eq * 1000) / 1000 }}
+            {{ Math.round(sums.diesel.kgCO2eq * 1000) / 1000 }}
           </td>
         </tr>
       </tbody>
@@ -220,16 +220,16 @@
           <td class="px-4 py-2">SUM</td>
           <!-- Petrol -->
           <td class="px-4 py-2">
-            {{ Math.round(sumKgCO2 * 1000) / 1000 }}
+            {{ Math.round(sums.total.kgCO2 * 1000) / 1000 }}
           </td>
           <td class="px-4 py-2">
-            {{ Math.round(sumKgCH4 * 1000) / 1000 }}
+            {{ Math.round(sums.total.kgCH4 * 1000) / 1000 }}
           </td>
           <td class="px-4 py-2">
-            {{ Math.round(sumKgN20 * 1000) / 1000 }}
+            {{ Math.round(sums.total.kgN2O * 1000) / 1000 }}
           </td>
           <td class="px-4 py-2">
-            {{ Math.round(sumKgC02Eq * 1000) / 1000 }}
+            {{ Math.round(sums.total.kgCO2eq * 1000) / 1000 }}
           </td>
         </tr>
       </tbody>
@@ -242,7 +242,7 @@ export default {
   name: "MobileCombustion",
   data() {
     return {
-      tableData: [
+      tableData: this.loadFromLocalStorage() || [
         {
           month: "Jan",
           sites: "HQ",
@@ -640,84 +640,109 @@ export default {
           kgCO2Eq: 0,
         },
       ],
-      sumPetrolkgco2: 0,
-      sumPetrolkgCH4: 0,
-      sumPetrolkgN2O: 0,
-      sumPetrolkgCO2eq: 0,
-      sumDieselkgco2: 0,
-      sumDieselkgCH4: 0,
-      sumDieselkgN2O: 0,
-      sumDieselkgCO2eq: 0,
-      sumLPGkgco2: 0,
-      sumLPGkgCH4: 0,
-      sumLPGkgN2O: 0,
-      sumLPGkgCO2eq: 0,
-      sumNGkgco2: 0,
-      sumNGkgCH4: 0,
-      sumNGkgN2O: 0,
-      sumNGkgCO2eq: 0,
-      sumKgCO2: 0,
-      sumKgCH4: 0,
-      sumKgN20: 0,
-      sumKgC02Eq: 0,
+      sums: this.loadSumsFromLocalStorage() || {
+        petrol: {
+          kgCO2: 0,
+          kgCH4: 0,
+          kgN2O: 0,
+          kgCO2eq: 0,
+        },
+        diesel: {
+          kgCO2: 0,
+          kgCH4: 0,
+          kgN2O: 0,
+          kgCO2eq: 0,
+        },
+        total: {
+          kgCO2: 0,
+          kgCH4: 0,
+          kgN2O: 0,
+          kgCO2eq: 0,
+        },
+      },
     };
   },
   methods: {
+    loadFromLocalStorage() {
+      const savedData = localStorage.getItem("mobileCombustionData");
+      return savedData ? JSON.parse(savedData) : null;
+    },
+
+    loadSumsFromLocalStorage() {
+      const savedSums = localStorage.getItem("mobileCombustionSums");
+      return savedSums ? JSON.parse(savedSums) : null;
+    },
+
+    saveToLocalStorage() {
+      localStorage.setItem(
+        "mobileCombustionData",
+        JSON.stringify(this.tableData)
+      );
+      localStorage.setItem("mobileCombustionSums", JSON.stringify(this.sums));
+    },
+
     calculateFuelConsumption() {
-      for (let i = 0; i < this.tableData.length; i++) {
-        // PETROL DATA
-        this.tableData[i].petrolTJ = this.tableData[i].petrolLitres * 0.0000277;
-        this.tableData[i].petrolkgCO2 = this.tableData[i].petrolTJ * 69300;
-        this.tableData[i].petrolkgCH4 = this.tableData[i].petrolTJ * 25;
-        this.tableData[i].petrolkgN2O = this.tableData[i].petrolTJ * 8;
-        this.tableData[i].petrolkgCO2eq =
-          this.tableData[i].petrolkgCO2 * 1 +
-          this.tableData[i].petrolkgCH4 * 28 +
-          this.tableData[i].petrolkgN2O * 265;
-        this.sumPetrolkgco2 =
-          this.sumPetrolkgco2 + this.tableData[i].petrolkgCO2;
-        this.sumPetrolkgCH4 =
-          this.sumPetrolkgCH4 + this.tableData[i].petrolkgCH4;
-        this.sumPetrolkgN2O =
-          this.sumPetrolkgN2O + this.tableData[i].petrolkgN2O;
-        this.sumPetrolkgCO2eq =
-          this.sumPetrolkgCO2eq + this.tableData[i].petrolkgCO2eq;
+      // Reset sums
+      Object.keys(this.sums).forEach((key) => {
+        Object.keys(this.sums[key]).forEach((subKey) => {
+          this.sums[key][subKey] = 0;
+        });
+      });
 
-        // Diesel Data
-        this.tableData[i].dieselTJ = this.tableData[i].dieselLitres * 0.000037;
-        this.tableData[i].dieselkgCO2 = this.tableData[i].dieselTJ * 74100;
-        this.tableData[i].dieselkgCH4 = this.tableData[i].dieselTJ * 3.9;
-        this.tableData[i].dieselkgN2O = this.tableData[i].dieselTJ * 3.9;
-        this.tableData[i].dieselkgCO2eq =
-          this.tableData[i].dieselkgCO2 * 1 +
-          this.tableData[i].dieselkgCH4 * 28 +
-          this.tableData[i].dieselkgN2O * 265;
-        this.sumDieselkgco2 =
-          this.sumDieselkgco2 + this.tableData[i].dieselkgCO2;
-        this.sumDieselkgCH4 =
-          this.sumDieselkgCH4 + this.tableData[i].dieselkgCH4;
-        this.sumDieselkgN2O =
-          this.sumDieselkgN2O + this.tableData[i].dieselkgN2O;
-        this.sumDieselkgCO2eq =
-          this.sumDieselkgCO2eq + this.tableData[i].dieselkgCO2eq;
+      this.tableData.forEach((row) => {
+        // Calculate Petrol
+        row.petrolTJ = row.petrolLitres * 0.0000277;
+        row.petrolkgCO2 = row.petrolTJ * 69300;
+        row.petrolkgCH4 = row.petrolTJ * 25;
+        row.petrolkgN2O = row.petrolTJ * 8;
+        row.petrolkgCO2eq =
+          row.petrolkgCO2 * 1 + row.petrolkgCH4 * 28 + row.petrolkgN2O * 265;
 
-        this.tableData[i].kgCO2 =
-          this.tableData[i].petrolkgCO2 + this.tableData[i].dieselkgCO2;
+        // Update petrol sums
+        this.sums.petrol.kgCO2 += row.petrolkgCO2;
+        this.sums.petrol.kgCH4 += row.petrolkgCH4;
+        this.sums.petrol.kgN2O += row.petrolkgN2O;
+        this.sums.petrol.kgCO2eq += row.petrolkgCO2eq;
 
-        this.tableData[i].kgCH4 =
-          this.tableData[i].petrolkgCH4 + this.tableData[i].dieselkgCH4;
+        // Calculate Diesel
+        row.dieselTJ = row.dieselLitres * 0.000037;
+        row.dieselkgCO2 = row.dieselTJ * 74100;
+        row.dieselkgCH4 = row.dieselTJ * 3.9;
+        row.dieselkgN2O = row.dieselTJ * 3.9;
+        row.dieselkgCO2eq =
+          row.dieselkgCO2 * 1 + row.dieselkgCH4 * 28 + row.dieselkgN2O * 265;
 
-        this.tableData[i].kgN20 =
-          this.tableData[i].petrolkgN2O + this.tableData[i].dieselkgN2O;
+        // Update diesel sums
+        this.sums.diesel.kgCO2 += row.dieselkgCO2;
+        this.sums.diesel.kgCH4 += row.dieselkgCH4;
+        this.sums.diesel.kgN2O += row.dieselkgN2O;
+        this.sums.diesel.kgCO2eq += row.dieselkgCO2eq;
 
-        this.tableData[i].kgCO2Eq =
-          this.tableData[i].petrolkgCO2eq + this.tableData[i].dieselkgCO2eq;
+        // Calculate row totals
+        row.kgCO2 = row.petrolkgCO2 + row.dieselkgCO2;
+        row.kgCH4 = row.petrolkgCH4 + row.dieselkgCH4;
+        row.kgN20 = row.petrolkgN2O + row.dieselkgN2O;
+        row.kgCO2Eq = row.petrolkgCO2eq + row.dieselkgCO2eq;
 
-        this.sumKgCO2 = this.sumKgCO2 + this.tableData[i].kgCO2;
-        this.sumKgCH4 = this.sumDieselkgCH4 + this.tableData[i].kgCH4;
-        this.sumKgN20 = this.sumKgN20 + this.tableData[i].kgN20;
-        this.sumKgC02Eq = this.sumKgC02Eq + this.tableData[i].kgCO2Eq;
-      }
+        // Update total sums
+        this.sums.total.kgCO2 += row.kgCO2;
+        this.sums.total.kgCH4 += row.kgCH4;
+        this.sums.total.kgN2O += row.kgN20;
+        this.sums.total.kgCO2eq += row.kgCO2Eq;
+      });
+
+      // Save updated data to localStorage
+      this.saveToLocalStorage();
+    },
+  },
+
+  // Watch for changes in input values
+  watch: {
+    tableData: {
+      handler(newVal) {
+        this.calculateFuelConsumption();
+      },
+      deep: true,
     },
   },
 };

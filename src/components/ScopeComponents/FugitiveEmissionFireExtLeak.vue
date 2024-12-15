@@ -1,6 +1,6 @@
 <template>
   <!-- Button -->
-  <button
+  <!-- <button
     @click="calculateFuelConsumption()"
     id="calculateFuelConsumption"
     class="group relative inline-block focus:outline-none focus:ring"
@@ -14,7 +14,7 @@
     >
       Calculate
     </span>
-  </button>
+  </button> -->
 
   <div class="py-5">
     <h1 class="text-2xl font-bold my-4">Capacity Information</h1>

@@ -72,7 +72,7 @@
     </button>
 
     <!-- Calculate Totals Button -->
-    <button
+    <!-- <button
       @click="calculateTotals()"
       class="m-4 group relative inline-block focus:outline-none focus:ring"
     >
@@ -84,7 +84,7 @@
       >
         Calculate Totals
       </span>
-    </button>
+    </button> -->
 
     <!-- Total Electricity Consumption -->
     <div v-if="totals.length > 0" class="mt-8">
@@ -182,7 +182,7 @@ export default {
   name: "PurchasedElectricity",
   data() {
     return {
-      tableData: [],
+      tableData: this.loadFromLocalStorage() || [],
       regions: ["Peninsular Malaysia", "Sabah", "Sarawak"],
       emissionFactors: {
         "Peninsular Malaysia": 0.758,
@@ -202,7 +202,7 @@ export default {
         "Oct",
         "Nov",
         "Dec",
-      ], // Months as keys
+      ],
       totals: [],
       emissionsByRegion: [],
       totalEmissionByMonth: [],
@@ -210,7 +210,27 @@ export default {
       overallTotalEmission: null,
     };
   },
+
   methods: {
+    loadFromLocalStorage() {
+      const savedData = localStorage.getItem("electricityData");
+      return savedData ? JSON.parse(savedData) : null;
+    },
+
+    saveToLocalStorage() {
+      localStorage.setItem(
+        "electricityData",
+        JSON.stringify({
+          tableData: this.tableData,
+          totals: this.totals,
+          emissionsByRegion: this.emissionsByRegion,
+          totalEmissionByMonth: this.totalEmissionByMonth,
+          totalEmissionByBuilding: this.totalEmissionByBuilding,
+          overallTotalEmission: this.overallTotalEmission,
+        })
+      );
+    },
+
     addRow() {
       const newRow = {
         buildingName: `Location ${this.tableData.length + 1}`,
@@ -218,14 +238,18 @@ export default {
       };
       this.months.forEach((month) => (newRow[month.toLowerCase()] = 0));
       this.tableData.push(newRow);
+      this.saveToLocalStorage();
     },
+
     calculateTotals() {
       this.calculateTotalConsumption();
       this.calculateEmissionsByRegion();
       this.calculateTotalEmissionByMonth();
       this.calculateTotalEmissionByBuilding();
       this.calculateOverallEmission();
+      this.saveToLocalStorage();
     },
+
     calculateTotalConsumption() {
       this.totals = this.months.map((month) => {
         return this.tableData.reduce(
@@ -234,6 +258,7 @@ export default {
         );
       });
     },
+
     calculateEmissionsByRegion() {
       this.emissionsByRegion = this.months.map((month) => {
         const emissions = {};
@@ -250,6 +275,7 @@ export default {
         return emissions;
       });
     },
+
     calculateTotalEmissionByMonth() {
       this.totalEmissionByMonth = this.emissionsByRegion.map(
         (monthEmission) => {
@@ -260,6 +286,7 @@ export default {
         }
       );
     },
+
     calculateTotalEmissionByBuilding() {
       this.totalEmissionByBuilding = this.tableData.map((row) => {
         const total = this.months.reduce((sum, month) => {
@@ -269,12 +296,37 @@ export default {
         return { buildingName: row.buildingName, total };
       });
     },
+
     calculateOverallEmission() {
       this.overallTotalEmission = this.totalEmissionByMonth.reduce(
         (sum, emission) => sum + emission,
         0
       );
     },
+  },
+
+  // Watch for changes in input values
+  watch: {
+    tableData: {
+      handler(newVal) {
+        this.calculateTotals();
+      },
+      deep: true,
+    },
+  },
+
+  // Load data when component is created
+  created() {
+    const savedData = localStorage.getItem("electricityData");
+    if (savedData) {
+      const data = JSON.parse(savedData);
+      this.tableData = data.tableData;
+      this.totals = data.totals;
+      this.emissionsByRegion = data.emissionsByRegion;
+      this.totalEmissionByMonth = data.totalEmissionByMonth;
+      this.totalEmissionByBuilding = data.totalEmissionByBuilding;
+      this.overallTotalEmission = data.overallTotalEmission;
+    }
   },
 };
 </script>

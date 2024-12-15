@@ -16,24 +16,24 @@
       >
         Scope 1 - Mobile Combustion
       </button>
-      <button
+      <!-- <button
         @click="currentView = ''"
         :class="buttonClass('FugitiveEmissionAC')"
       >
         Scope 1 - Fugitive Emission (Air Conditioner)
-      </button>
+      </button> -->
       <button
         @click="currentView = 'FugitiveEmissionFireExt'"
         :class="buttonClass('FugitiveEmissionFireExt')"
       >
         Scope 1 - Fugitive Emission (Fire Extinguisher Used)
       </button>
-      <button
+      <!-- <button
         @click="currentView = 'FugitiveEmissionFireExtLeak'"
         :class="buttonClass('FugitiveEmissionFireExtLeak')"
       >
         Scope 1 - Fugitive Emission (Fire Extinguisher Leakage)
-      </button>
+      </button> -->
       <button
         @click="currentView = 'PurchasedElectricity'"
         :class="buttonClass('Electricity')"
@@ -48,7 +48,7 @@
 </template>
 
 <script>
-import StationaryCombustion from "./ScopeComponents/ScopeStionaryCombustion.vue";
+import StationaryCombustion from "./ScopeComponents/ScopeStatiionaryCombustion.vue";
 import MobileCombustion from "./ScopeComponents/ScopeMobileCombustion.vue";
 // import FugitiveEmissionAC from "./ScopeComponents/FugitiveEmissionAC.vue";
 import FugitiveEmissionFireExt from "./ScopeComponents/FugitiveEmissionFireExt.vue";

@@ -1,6 +1,6 @@
 <template>
   <!-- Button -->
-  <button
+  <!-- <button
     @click="calculateFuelConsumption()"
     id="calculateFuelConsumption"
     class="group relative inline-block focus:outline-none focus:ring"
@@ -14,7 +14,7 @@
     >
       Calculate
     </span>
-  </button>
+  </button> -->
 
   <div class="py-5">
     <h1 class="text-2xl font-bold my-4">Capacity Information</h1>
@@ -196,7 +196,7 @@
           <td class="px-4 py-2">SUM</td>
           <!-- Petrol -->
           <td class="px-4 py-2">
-            {{ Math.round(sumTotalEmission * 1000) / 1000 }}
+            {{ Math.round(sums.total.emissions * 1000) / 1000 }}
           </td>
         </tr>
       </tbody>
@@ -209,7 +209,7 @@ export default {
   name: "FugitiveEmissionFireExt",
   data() {
     return {
-      tableData: [
+      tableData: this.loadFromLocalStorage() || [
         {
           month: "Jan",
           sites: "HQ",
@@ -439,40 +439,86 @@ export default {
           totalEmission: 0,
         },
       ],
-      sumTotalEmission: 0,
+      sums: this.loadSumsFromLocalStorage() || {
+        fixed: {
+          CO2: 0,
+          HFC: 0,
+          total: 0,
+        },
+        portable: {
+          CO2: 0,
+        },
+        total: {
+          emissions: 0,
+        },
+      },
     };
   },
+
   methods: {
+    loadFromLocalStorage() {
+      const savedData = localStorage.getItem("fugitiveEmissionsData");
+      return savedData ? JSON.parse(savedData) : null;
+    },
+
+    loadSumsFromLocalStorage() {
+      const savedSums = localStorage.getItem("fugitiveEmissionsSums");
+      return savedSums ? JSON.parse(savedSums) : null;
+    },
+
+    saveToLocalStorage() {
+      localStorage.setItem(
+        "fugitiveEmissionsData",
+        JSON.stringify(this.tableData)
+      );
+      localStorage.setItem("fugitiveEmissionsSums", JSON.stringify(this.sums));
+    },
+
     calculateFuelConsumption() {
-      for (let i = 0; i < this.tableData.length; i++) {
+      // Reset sums
+      Object.keys(this.sums).forEach((key) => {
+        Object.keys(this.sums[key]).forEach((subKey) => {
+          this.sums[key][subKey] = 0;
+        });
+      });
+
+      this.tableData.forEach((row) => {
         // Fixed CO2
-        this.tableData[i].totalCapacityFixedCO2 =
-          this.tableData[i].capacityFixedCO2 * this.tableData[i].unitFixedCO2;
-        this.tableData[i].emissionsFixedCO2 =
-          this.tableData[i].totalCapacityFixedCO2 * 1;
+        row.totalCapacityFixedCO2 = row.capacityFixedCO2 * row.unitFixedCO2;
+        row.emissionsFixedCO2 = row.totalCapacityFixedCO2 * 1;
+        this.sums.fixed.CO2 += row.emissionsFixedCO2;
 
         // Fixed HFC-227ea
-        this.tableData[i].totalHFC =
-          this.tableData[i].capacityHFC * this.tableData[i].unitHFC;
-        this.tableData[i].emissionsHFC = this.tableData[i].totalHFC * 3350;
+        row.totalHFC = row.capacityHFC * row.unitHFC;
+        row.emissionsHFC = row.totalHFC * 3350;
+        this.sums.fixed.HFC += row.emissionsHFC;
 
         // Portable CO2
-        this.tableData[i].totalCapacityPortableCO2 =
-          this.tableData[i].capacityPortableCO2 *
-          this.tableData[i].unitPortableCO2;
-        this.tableData[i].emissionsPortableCO2 =
-          this.tableData[i].totalCapacityPortableCO2 * 1;
+        row.totalCapacityPortableCO2 =
+          row.capacityPortableCO2 * row.unitPortableCO2;
+        row.emissionsPortableCO2 = row.totalCapacityPortableCO2 * 1;
+        this.sums.portable.CO2 += row.emissionsPortableCO2;
 
-        //  Total
-        this.tableData[i].totalEmissionFixed =
-          this.tableData[i].emissionsHFC + this.tableData[i].emissionsFixedCO2;
-        this.tableData[i].totalEmission =
-          this.tableData[i].totalEmissionFixed +
-          this.tableData[i].emissionsPortableCO2;
+        // Total
+        row.totalEmissionFixed = row.emissionsHFC + row.emissionsFixedCO2;
+        this.sums.fixed.total += row.totalEmissionFixed;
 
-        this.sumTotalEmission =
-          this.sumTotalEmission + this.tableData[i].totalEmission;
-      }
+        row.totalEmission = row.totalEmissionFixed + row.emissionsPortableCO2;
+        this.sums.total.emissions += row.totalEmission;
+      });
+
+      // Save updated data to localStorage
+      this.saveToLocalStorage();
+    },
+  },
+
+  // Watch for changes in input values
+  watch: {
+    tableData: {
+      handler(newVal) {
+        this.calculateFuelConsumption();
+      },
+      deep: true,
     },
   },
 };
