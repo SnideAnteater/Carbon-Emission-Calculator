@@ -5,6 +5,12 @@
     <!-- Navigation Links for Categories -->
     <div class="flex space-x-4">
       <button
+        @click="currentView = 'DataVisualization'"
+        :class="buttonClass('DataVisualization')"
+      >
+        Data Visualization
+      </button>
+      <button
         @click="currentView = 'StationaryCombustion'"
         :class="buttonClass('StationaryCombustion')"
       >
@@ -54,6 +60,7 @@ import MobileCombustion from "./ScopeComponents/ScopeMobileCombustion.vue";
 import FugitiveEmissionFireExt from "./ScopeComponents/FugitiveEmissionFireExt.vue";
 import FugitiveEmissionFireExtLeak from "./ScopeComponents/FugitiveEmissionFireExtLeak.vue";
 import PurchasedElectricity from "./ScopeComponents/Electricity.vue";
+import DataVisualization from "./DataVisualization.vue";
 
 export default {
   name: "Dashboard",
@@ -64,10 +71,11 @@ export default {
     FugitiveEmissionFireExt,
     FugitiveEmissionFireExtLeak,
     PurchasedElectricity,
+    DataVisualization,
   },
   data() {
     return {
-      currentView: "StationaryCombustion",
+      currentView: "DataVisualization",
     };
   },
   methods: {
