@@ -2,6 +2,66 @@
   <div class="p-6 mx-auto">
     <h1 class="text-2xl font-bold mb-4">Carbon Quanta</h1>
 
+    <div class="navigation flex justify-center items-center">
+      <ul>
+        <li>
+          <a
+            @click="currentView = 'DataVisualization'"
+            :class="buttonClass('DataVisualization')"
+          >
+            <span class="icon">
+              <img class="h-8 w-8" src="../assets/analytics.svg" alt="" />
+            </span>
+            <span class="text">Overview</span>
+          </a>
+        </li>
+        <li>
+          <a
+            @click="currentView = 'StationaryCombustion'"
+            :class="buttonClass('StationaryCombustion')"
+          >
+            <span class="icon">
+              <img class="h-8 w-8" src="../assets/s1.png" alt="" />
+            </span>
+            <span class="text">Scope 1</span>
+          </a>
+        </li>
+        <li>
+          <a
+            @click="currentView = 'MobileCombustion'"
+            :class="buttonClass('MobileCombustion')"
+          >
+            <span class="icon">
+              <img class="h-8 w-8" src="../assets/s2.png" alt="" />
+            </span>
+            <span class="text">Scope 2</span>
+          </a>
+        </li>
+        <li>
+          <a
+            @click="currentView = 'FugitiveEmissionFireExt'"
+            :class="buttonClass('FugitiveEmissionFireExt')"
+          >
+            <span class="icon">
+              <img class="h-8 w-8" src="../assets/s3.png" alt="" />
+            </span>
+            <span class="text">Scope 3</span>
+          </a>
+        </li>
+        <li>
+          <a
+            @click="currentView = 'PurchasedElectricity'"
+            :class="buttonClass('Electricity')"
+          >
+            <span class="icon">
+              <img class="h-8 w-8" src="../assets/server.svg" alt="" />
+            </span>
+            <span class="text">Setting</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+
     <!-- Navigation Links for Categories -->
     <div class="flex space-x-4">
       <button
@@ -81,9 +141,8 @@ export default {
   methods: {
     buttonClass(view) {
       return {
-        "text-blue-500 font-semibold border-b-2 border-blue-500":
-          this.currentView === view,
-        "text-gray-500 hover:text-blue-500": this.currentView !== view,
+        " active": this.currentView === view,
+        "": this.currentView !== view,
       };
     },
   },

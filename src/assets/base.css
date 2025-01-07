@@ -281,6 +281,7 @@ h5,
 h6 {
   font-size: inherit;
   font-weight: inherit;
+  color: white;
 }
 
 /*
@@ -516,6 +517,7 @@ figure,
 p,
 pre {
   margin: 0;
+  color: white;
 }
 
 fieldset {
