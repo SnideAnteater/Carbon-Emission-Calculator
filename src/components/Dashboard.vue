@@ -60,7 +60,7 @@
       </ul>
     </div>
     <!-- Display Selected Component -->
-    <component :is="currentView" class="mt-6"></component>
+    <component :is="currentView"></component>
   </div>
 </template>
 

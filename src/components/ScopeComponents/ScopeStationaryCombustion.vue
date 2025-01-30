@@ -1,26 +1,24 @@
 <template>
-  <!-- Button -->
-  <!-- <button
-    @click="calculateFuelConsumption()"
-    id="calculateFuelConsumption"
-    class="group relative inline-block focus:outline-none focus:ring"
-  >
-    <span
-      class="absolute inset-0 translate-x-1.5 translate-y-1.5 bg-yellow-300 transition-transform group-hover:translate-x-0 group-hover:translate-y-0"
-    ></span>
-
-    <span
-      class="relative inline-block border-2 border-current px-8 py-3 text-sm font-bold uppercase tracking-widest text-black group-active:text-opacity-75"
-    >
-      Calculate
-    </span>
-  </button> -->
-
   <div class="py-5">
-    <h1 class="text-2xl font-bold my-4">Fuel Information</h1>
+    <!-- Stationary Combustion Charts -->
+    <div class="bg-white p-4 rounded-lg shadow">
+      <div class="flex justify-between items-center mb-4">
+        <h2 class="text-xl font-semibold">Stationary Combustion Emissions</h2>
+        <button
+          @click="handleUpdate"
+          class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+        >
+          Update Graph
+        </button>
+      </div>
+      <div style="height: 400px">
+        <canvas ref="stationaryChart"></canvas>
+      </div>
+    </div>
 
+    <h1 class="text-2xl font-bold my-4">Fuel Information</h1>
     <table class="min-w-full text-left text-sm">
-      <thead class="bg-gray-100 text-xs uppercase">
+      <thead class="text-xs uppercase bg-slate-500 text-slate-50">
         <tr>
           <th class="px-4 py-2">Month</th>
           <th class="px-4 py-2">Sites</th>
@@ -39,7 +37,7 @@
           <th class="px-4 py-2">Natural Gas (TJ)</th>
         </tr>
       </thead>
-      <tbody class="divide-y divide-gray-200">
+      <tbody class="divide-y divide-gray-200 text-white">
         <tr v-for="(row, index) in tableData" :key="index">
           <td class="px-4 py-2">{{ row.month }}</td>
           <td class="px-4 py-2">{{ row.sites }}</td>
@@ -95,7 +93,7 @@
     <h1 class="text-2xl font-bold my-4">Petrol Fuel Emissions</h1>
 
     <table class="min-w-full text-left text-sm">
-      <thead class="bg-gray-100 text-xs uppercase">
+      <thead class="bg-slate-500 text-slate-50 text-xs uppercase">
         <tr>
           <th class="px-4 py-2">Month</th>
           <th class="px-4 py-2">Sites</th>
@@ -107,7 +105,7 @@
           <th class="px-4 py-2">Petrol (kgCO2eq)</th>
         </tr>
       </thead>
-      <tbody class="divide-y divide-gray-200">
+      <tbody class="divide-y divide-gray-200 text-white">
         <tr v-for="(row, index) in tableData" :key="index">
           <td class="px-4 py-2">{{ row.month }}</td>
           <td class="px-4 py-2">{{ row.sites }}</td>
@@ -152,7 +150,7 @@
     <h1 class="text-2xl font-bold my-4">Diesel Emissions</h1>
 
     <table class="min-w-full text-left text-sm">
-      <thead class="bg-gray-100 text-xs uppercase">
+      <thead class="bg-slate-500 text-slate-50 text-xs uppercase">
         <tr>
           <th class="px-4 py-2">Month</th>
           <th class="px-4 py-2">Sites</th>
@@ -164,7 +162,7 @@
           <th class="px-4 py-2">Diesel (kgCO2eq)</th>
         </tr>
       </thead>
-      <tbody class="divide-y divide-gray-200">
+      <tbody class="divide-y divide-gray-200 text-white">
         <tr v-for="(row, index) in tableData" :key="index">
           <td class="px-4 py-2">{{ row.month }}</td>
           <td class="px-4 py-2">{{ row.sites }}</td>
@@ -209,7 +207,7 @@
     <h1 class="text-2xl font-bold my-4">LPG Emissions</h1>
 
     <table class="min-w-full text-left text-sm">
-      <thead class="bg-gray-100 text-xs uppercase">
+      <thead class="bg-slate-500 text-slate-50 text-xs uppercase">
         <tr>
           <th class="px-4 py-2">Month</th>
           <th class="px-4 py-2">Sites</th>
@@ -221,7 +219,7 @@
           <th class="px-4 py-2">LPG (kgCO2eq)</th>
         </tr>
       </thead>
-      <tbody class="divide-y divide-gray-200">
+      <tbody class="divide-y divide-gray-200 text-white">
         <tr v-for="(row, index) in tableData" :key="index">
           <td class="px-4 py-2">{{ row.month }}</td>
           <td class="px-4 py-2">{{ row.sites }}</td>
@@ -266,7 +264,7 @@
     <h1 class="text-2xl font-bold my-4">Natural Gas Emissions</h1>
 
     <table class="min-w-full text-left text-sm">
-      <thead class="bg-gray-100 text-xs uppercase">
+      <thead class="bg-slate-500 text-slate-50 text-xs uppercase">
         <tr>
           <th class="px-4 py-2">Month</th>
           <th class="px-4 py-2">Sites</th>
@@ -278,7 +276,7 @@
           <th class="px-4 py-2">Natural Gas (kgCO2eq)</th>
         </tr>
       </thead>
-      <tbody class="divide-y divide-gray-200">
+      <tbody class="divide-y divide-gray-200 text-white">
         <tr v-for="(row, index) in tableData" :key="index">
           <td class="px-4 py-2">{{ row.month }}</td>
           <td class="px-4 py-2">{{ row.sites }}</td>
@@ -323,7 +321,7 @@
     <h1 class="text-2xl font-bold my-4">Total Emissions</h1>
 
     <table class="min-w-full text-left text-sm">
-      <thead class="bg-gray-100 text-xs uppercase">
+      <thead class="bg-slate-500 text-slate-50 text-xs uppercase">
         <tr>
           <th class="px-4 py-2">Month</th>
           <th class="px-4 py-2">Sites</th>
@@ -335,7 +333,7 @@
           <th class="px-4 py-2">kgCO2eq</th>
         </tr>
       </thead>
-      <tbody class="divide-y divide-gray-200">
+      <tbody class="divide-y divide-gray-200 text-white">
         <tr v-for="(row, index) in tableData" :key="index">
           <td class="px-4 py-2">{{ row.month }}</td>
           <td class="px-4 py-2">{{ row.sites }}</td>
@@ -378,10 +376,13 @@
 </template>
 
 <script>
+import Chart from "chart.js/auto";
+
 export default {
   name: "StationaryCombustion",
   data() {
     return {
+      charts: {},
       tableData: this.loadFromLocalStorage() || [
         {
           month: "Jan",
@@ -815,6 +816,10 @@ export default {
     };
   },
 
+  mounted() {
+    this.createStationaryChart();
+  },
+
   methods: {
     loadFromLocalStorage() {
       const savedData = localStorage.getItem("stationaryCombustionData");
@@ -824,6 +829,71 @@ export default {
     loadSumsFromLocalStorage() {
       const savedSums = localStorage.getItem("stationaryCombustionSums");
       return savedSums ? JSON.parse(savedSums) : null;
+    },
+
+    createStationaryChart() {
+      if (this.charts.stationary) {
+        this.charts.stationary.destroy();
+      }
+
+      const ctx = this.$refs.stationaryChart;
+      this.charts.stationary = new Chart(ctx, {
+        type: "line",
+        data: {
+          labels: this.tableData.map((row) => row.month),
+          datasets: [
+            {
+              label: "Petrol CO2eq",
+              data: this.tableData.map((row) => row.petrolkgCO2eq),
+              borderColor: "rgb(255, 99, 132)",
+              backgroundColor: "rgba(255, 99, 132, 0.2)",
+              fill: true,
+            },
+            {
+              label: "Diesel CO2eq",
+              data: this.tableData.map((row) => row.dieselkgCO2eq),
+              borderColor: "rgb(54, 162, 235)",
+              backgroundColor: "rgba(54, 162, 235, 0.2)",
+              fill: true,
+            },
+            {
+              label: "LPG CO2eq",
+              data: this.tableData.map((row) => row.lpgkgCO2eq),
+              borderColor: "rgb(75, 192, 192)",
+              backgroundColor: "rgba(75, 192, 192, 0.2)",
+              fill: true,
+            },
+            {
+              label: "Natural Gas CO2eq",
+              data: this.tableData.map((row) => row.naturalGaskgCO2eq),
+              borderColor: "rgb(153, 102, 255)",
+              backgroundColor: "rgba(153, 102, 255, 0.2)",
+              fill: true,
+            },
+          ],
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          animation: {
+            duration: 750,
+          },
+          plugins: {
+            title: {
+              display: true,
+              text: "Monthly Emissions by Fuel Type",
+            },
+            legend: {
+              position: "top",
+            },
+          },
+          scales: {
+            y: {
+              beginAtZero: true,
+            },
+          },
+        },
+      });
     },
 
     saveToLocalStorage() {
@@ -936,15 +1006,10 @@ export default {
       // Save updated data to localStorage
       this.saveToLocalStorage();
     },
-  },
 
-  // Watch for changes in input values
-  watch: {
-    tableData: {
-      handler(newVal) {
-        this.calculateFuelConsumption();
-      },
-      deep: true,
+    handleUpdate() {
+      this.calculateFuelConsumption();
+      this.createStationaryChart();
     },
   },
 };

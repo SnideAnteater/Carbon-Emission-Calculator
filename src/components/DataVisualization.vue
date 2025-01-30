@@ -2,30 +2,34 @@
   <div class="p-6">
     <div class="grid grid-cols-2 gap-6">
       <!-- Stationary Combustion Charts -->
-      <div class="bg-white p-4 rounded-lg shadow">
-        <h2 class="text-xl font-semibold mb-4">
+      <div className="bg-white p-4 rounded-lg shadow">
+        <h2 className="text-xl font-semibold mb-4">
           Stationary Combustion Emissions
         </h2>
         <canvas ref="stationaryChart"></canvas>
       </div>
 
       <!-- Mobile Combustion Charts -->
-      <div class="bg-white p-4 rounded-lg shadow">
-        <h2 class="text-xl font-semibold mb-4">Mobile Combustion Emissions</h2>
+      <div className="bg-white p-4 rounded-lg shadow">
+        <h2 className="text-xl font-semibold mb-4">
+          Mobile Combustion Emissions
+        </h2>
         <canvas ref="mobileChart"></canvas>
       </div>
 
       <!-- Electricity Consumption -->
-      <div class="bg-white p-4 rounded-lg shadow">
-        <h2 class="text-xl font-semibold mb-4">
+      <div className="bg-white p-4 rounded-lg shadow">
+        <h2 className="text-xl font-semibold mb-4">
           Electricity Consumption by Region
         </h2>
         <canvas ref="electricityChart"></canvas>
       </div>
 
       <!-- Fire Extinguisher Emissions -->
-      <div class="bg-white p-4 rounded-lg shadow">
-        <h2 class="text-xl font-semibold mb-4">Fire Extinguisher Emissions</h2>
+      <div className="bg-white p-4 rounded-lg shadow">
+        <h2 className="text-xl font-semibold mb-4">
+          Fire Extinguisher Emissions
+        </h2>
         <canvas ref="fireExtChart"></canvas>
       </div>
     </div>
@@ -76,9 +80,11 @@ export default {
         localStorage.getItem("mobileCombustionSums") || "{}"
       );
 
+      console.log(localStorage.getItem("electricityData"));
       const electricityData = JSON.parse(
         localStorage.getItem("electricityData") || "{}"
       );
+      console.log(electricityData);
 
       const fireExtData = JSON.parse(
         localStorage.getItem("fugitiveEmissionsData") || "[]"
@@ -170,6 +176,7 @@ export default {
     },
 
     createElectricityChart(data) {
+      // console.log(data);
       const ctx = this.$refs.electricityChart;
       if (!data.emissionsByRegion) return;
 

@@ -1,26 +1,22 @@
 <template>
-  <!-- Button -->
-  <!-- <button
-    @click="calculateFuelConsumption()"
-    id="calculateFuelConsumption"
-    class="group relative inline-block focus:outline-none focus:ring"
-  >
-    <span
-      class="absolute inset-0 translate-x-1.5 translate-y-1.5 bg-yellow-300 transition-transform group-hover:translate-x-0 group-hover:translate-y-0"
-    ></span>
-
-    <span
-      class="relative inline-block border-2 border-current px-8 py-3 text-sm font-bold uppercase tracking-widest text-black group-active:text-opacity-75"
-    >
-      Calculate
-    </span>
-  </button> -->
-
   <div class="py-5">
+    <!-- Fire Extinguisher Emissions Charts -->
+    <div class="bg-white p-4 rounded-lg shadow">
+      <div class="flex justify-between items-center mb-4">
+        <h2 class="text-xl font-semibold">Fire Extinguisher Emissions</h2>
+        <button
+          @click="handleUpdate"
+          class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+        >
+          Update Graph
+        </button>
+      </div>
+      <canvas ref="fireExtChart"></canvas>
+    </div>
     <h1 class="text-2xl font-bold my-4">Capacity Information</h1>
 
     <table class="min-w-full text-left text-sm">
-      <thead class="bg-gray-100 text-xs uppercase">
+      <thead class="bg-slate-500 text-slate-50 text-xs uppercase">
         <tr>
           <th class="px-4 py-2">Month</th>
           <th class="px-4 py-2">Sites</th>
@@ -36,7 +32,7 @@
           <th class="px-4 py-2">Portable CO2 Num. of unit</th>
         </tr>
       </thead>
-      <tbody class="divide-y divide-gray-200">
+      <tbody class="divide-y text-white divide-gray-200">
         <tr v-for="(row, index) in tableData" :key="index">
           <td class="px-4 py-2">{{ row.month }}</td>
           <td class="px-4 py-2">{{ row.sites }}</td>
@@ -97,7 +93,7 @@
     <h1 class="text-2xl font-bold my-4">Total Capacity</h1>
 
     <table class="min-w-full text-left text-sm">
-      <thead class="bg-gray-100 text-xs uppercase">
+      <thead class="bg-slate-500 text-slate-50 text-xs uppercase">
         <tr>
           <th class="px-4 py-2">Month</th>
           <th class="px-4 py-2">Sites</th>
@@ -108,7 +104,7 @@
           <th class="px-4 py-2">Portable CO2 Total Capacity(kg)</th>
         </tr>
       </thead>
-      <tbody class="divide-y divide-gray-200">
+      <tbody class="divide-y text-white divide-gray-200">
         <tr v-for="(row, index) in tableData" :key="index">
           <td class="px-4 py-2">{{ row.month }}</td>
           <td class="px-4 py-2">{{ row.sites }}</td>
@@ -135,7 +131,7 @@
     <h1 class="text-2xl font-bold my-4">Emissions Produced</h1>
 
     <table class="min-w-full text-left text-sm">
-      <thead class="bg-gray-100 text-xs uppercase">
+      <thead class="bg-slate-500 text-slate-50 text-xs uppercase">
         <tr>
           <th class="px-4 py-2">Month</th>
           <th class="px-4 py-2">Sites</th>
@@ -146,7 +142,7 @@
           <th class="px-4 py-2">Portable CO2</th>
         </tr>
       </thead>
-      <tbody class="divide-y divide-gray-200">
+      <tbody class="divide-y text-white divide-gray-200">
         <tr v-for="(row, index) in tableData" :key="index">
           <td class="px-4 py-2">{{ row.month }}</td>
           <td class="px-4 py-2">{{ row.sites }}</td>
@@ -170,7 +166,7 @@
     <h1 class="text-2xl font-bold my-4">Total Emissions kgCO2eq</h1>
 
     <table class="min-w-full text-left text-sm">
-      <thead class="bg-gray-100 text-xs uppercase">
+      <thead class="bg-slate-500 text-slate-50 text-xs uppercase">
         <tr>
           <!-- kgCO2eq -->
           <th class="px-4 py-2">Fixed</th>
@@ -178,7 +174,7 @@
           <th class="px-4 py-2">Total</th>
         </tr>
       </thead>
-      <tbody class="divide-y divide-gray-200">
+      <tbody class="divide-y text-white divide-gray-200">
         <tr v-for="(row, index) in tableData" :key="index">
           <!-- kgCO2eq -->
           <td class="px-4 py-2">
@@ -205,10 +201,13 @@
 </template>
 
 <script>
+import Chart from "chart.js/auto";
+
 export default {
   name: "FugitiveEmissionFireExt",
   data() {
     return {
+      charts: {},
       tableData: this.loadFromLocalStorage() || [
         {
           month: "Jan",
@@ -455,7 +454,53 @@ export default {
     };
   },
 
+  mounted() {
+    this.createFireExtChart();
+  },
   methods: {
+    createFireExtChart() {
+      if (this.charts.fireExt) {
+        this.charts.fireExt.destroy();
+      }
+
+      const ctx = this.$refs.fireExtChart;
+      this.charts.fireExt = new Chart(ctx, {
+        type: "line",
+        data: {
+          labels: this.tableData.map((row) => row.month),
+          datasets: [
+            {
+              label: "Fixed CO2",
+              data: this.tableData.map((row) => row.emissionsFixedCO2),
+              borderColor: "rgb(255, 99, 132)",
+              tension: 0.1,
+            },
+            {
+              label: "Fixed HFC",
+              data: this.tableData.map((row) => row.emissionsHFC),
+              borderColor: "rgb(54, 162, 235)",
+              tension: 0.1,
+            },
+            {
+              label: "Portable CO2",
+              data: this.tableData.map((row) => row.emissionsPortableCO2),
+              borderColor: "rgb(75, 192, 192)",
+              tension: 0.1,
+            },
+          ],
+        },
+        options: {
+          responsive: true,
+          plugins: {
+            title: {
+              display: true,
+              text: "Monthly Fire Extinguisher Emissions",
+            },
+          },
+        },
+      });
+    },
+
     loadFromLocalStorage() {
       const savedData = localStorage.getItem("fugitiveEmissionsData");
       return savedData ? JSON.parse(savedData) : null;
@@ -509,6 +554,10 @@ export default {
 
       // Save updated data to localStorage
       this.saveToLocalStorage();
+    },
+
+    handleUpdate() {
+      this.createFireExtChart();
     },
   },
 

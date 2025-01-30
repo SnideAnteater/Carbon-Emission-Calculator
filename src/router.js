@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory } from "vue-router";
-import StationaryCombustion from "./components/ScopeComponents/ScopeStatiionaryCombustion.vue";
+import StationaryCombustion from "./components/ScopeComponents/ScopeStationaryCombustion.vue";
 // import MobileCombustion from "@/components/MobileCombustion.vue";
 // import FugitiveEmissionAC from "@/components/FugitiveEmissionAC.vue";
 // import FugitiveEmissionFireExt from "@/components/FugitiveEmissionFireExt.vue";

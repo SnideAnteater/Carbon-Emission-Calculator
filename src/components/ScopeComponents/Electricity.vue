@@ -1,10 +1,23 @@
 <template>
   <div class="p-6 mx-auto">
+    <!-- Mobile Combustion Charts -->
+    <div class="bg-white p-4 rounded-lg shadow">
+      <div class="flex justify-between items-center mb-4">
+        <h2 class="text-xl font-semibold">Electricity Consumption by Region</h2>
+        <button
+          @click="handleUpdate"
+          class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+        >
+          Update Graph
+        </button>
+      </div>
+      <canvas ref="electricityChart"></canvas>
+    </div>
     <h2 class="text-2xl font-semibold mb-4">Purchased Electricity</h2>
 
     <!-- Electricity Table -->
     <table class="min-w-full text-left text-sm">
-      <thead class="bg-gray-100 text-xs uppercase">
+      <thead class="bg-slate-500 text-slate-50 text-xs uppercase">
         <tr>
           <th class="px-4 py-2">Building Name</th>
           <th class="px-4 py-2">Region</th>
@@ -22,20 +35,23 @@
           <th class="px-4 py-2">Dec</th>
         </tr>
       </thead>
-      <tbody>
+      <tbody class="divide-y text-gray-700 divide-gray-200">
         <tr v-for="(row, index) in tableData" :key="index">
           <!-- Editable Building Name -->
           <td class="p-2 text-center">
             <input
               v-model="row.buildingName"
               type="text"
-              class="w-full rounded text-center"
+              class="w-full border rounded-lg px-2 py-1 text-gray-700"
             />
           </td>
 
           <!-- Region Dropdown -->
           <td class="p-2">
-            <select v-model="row.region" class="w-full rounded">
+            <select
+              v-model="row.region"
+              class="w-full border rounded-lg px-2 py-1 text-gray-700"
+            >
               <option disabled value="">Select Region</option>
               <option v-for="region in regions" :key="region" :value="region">
                 {{ region }}
@@ -48,7 +64,7 @@
             <input
               v-model.number="row[month.toLowerCase()]"
               type="number"
-              class="w-full border rounded-lg px-2 py-1 text-gray-70"
+              class="w-full border rounded-lg px-2 py-1 text-gray-700"
               placeholder="0"
               min="0"
             />
@@ -65,7 +81,7 @@
         class="absolute inset-0 translate-x-1.5 translate-y-1.5 bg-green-300 transition-transform group-hover:translate-x-0 group-hover:translate-y-0"
       ></span>
       <span
-        class="relative inline-block border-2 border-current px-8 py-3 text-sm font-bold uppercase tracking-widest text-black group-active:text-opacity-75"
+        class="border-white relative inline-block border-2 border-current px-8 py-3 text-sm font-bold uppercase tracking-widest text-black group-active:text-opacity-75"
       >
         Add Row
       </span>
@@ -90,13 +106,13 @@
     <div v-if="totals.length > 0" class="mt-8">
       <h2 class="text-xl font-semibold mb-4">Total Electricity Consumption</h2>
       <table class="min-w-full text-center">
-        <thead class="bg-gray-100 text-xs uppercase">
+        <thead class="bg-slate-500 text-slate-50 text-xs uppercase">
           <tr>
             <th>Month</th>
             <th>Total Consumption</th>
           </tr>
         </thead>
-        <tbody>
+        <tbody class="divide-y divide-gray-200 text-white">
           <tr v-for="(total, index) in totals" :key="index">
             <td>{{ months[index] }}</td>
             <td>{{ total }}</td>
@@ -109,13 +125,13 @@
     <div v-if="emissionsByRegion.length > 0" class="mt-8">
       <h2 class="text-xl font-semibold mb-4">Emissions by Region</h2>
       <table class="min-w-full text-center">
-        <thead class="bg-gray-100 text-xs uppercase">
+        <thead class="bg-slate-500 text-slate-50 text-xs uppercase">
           <tr>
             <th>Month</th>
             <th v-for="region in regions" :key="region">{{ region }}</th>
           </tr>
         </thead>
-        <tbody>
+        <tbody class="divide-y divide-gray-200 text-white">
           <tr
             v-for="(monthEmission, monthIndex) in emissionsByRegion"
             :key="monthIndex"
@@ -139,7 +155,7 @@
             <th>Total Emission (kgCO2e)</th>
           </tr>
         </thead>
-        <tbody>
+        <tbody class="divide-y divide-gray-200 text-white">
           <tr v-for="(total, index) in totalEmissionByMonth" :key="index">
             <td>{{ months[index] }}</td>
             <td>{{ total }}</td>
@@ -158,7 +174,7 @@
             <th>Total Emission (kgCO2e)</th>
           </tr>
         </thead>
-        <tbody>
+        <tbody class="divide-y divide-gray-200 text-white">
           <tr v-for="(emission, index) in totalEmissionByBuilding" :key="index">
             <td>{{ emission.buildingName }}</td>
             <td>{{ emission.total }}</td>
@@ -168,7 +184,10 @@
     </div>
 
     <!-- Overall Emission -->
-    <div v-if="overallTotalEmission !== null" class="mt-8">
+    <div
+      v-if="overallTotalEmission !== null"
+      class="mt-8 justify-center text-center"
+    >
       <h3 class="text-xl font-semibold mb-4">
         Overall Total Emission (kgCO2e)
       </h3>
@@ -178,10 +197,13 @@
 </template>
 
 <script>
+import Chart from "chart.js/auto";
 export default {
   name: "PurchasedElectricity",
   data() {
     return {
+      charts: {},
+      data: this.loadFromLocalStorage() || [],
       tableData: this.loadFromLocalStorage() || [],
       regions: ["Peninsular Malaysia", "Sabah", "Sarawak"],
       emissionFactors: {
@@ -211,10 +233,66 @@ export default {
     };
   },
 
+  mounted() {
+    this.createElectricityChart();
+  },
+
   methods: {
+    createElectricityChart() {
+      if (this.charts.electricityChart) {
+        this.charts.electricityChart.destroy();
+      }
+
+      const ctx = this.$refs.electricityChart;
+      if (!this.data.emissionsByRegion) {
+        console.log("No data to display");
+        return;
+      }
+
+      const datasets = this.months.map((month, index) => ({
+        month,
+        ...this.data.emissionsByRegion[index],
+      }));
+
+      this.charts.electricityChart = new Chart(ctx, {
+        type: "bar",
+        data: {
+          labels: this.months,
+          datasets: [
+            {
+              label: "Peninsular Malaysia",
+              data: datasets.map((d) => d["Peninsular Malaysia"]),
+              backgroundColor: "rgba(255, 99, 132, 0.5)",
+            },
+            {
+              label: "Sabah",
+              data: datasets.map((d) => d["Sabah"]),
+              backgroundColor: "rgba(54, 162, 235, 0.5)",
+            },
+            {
+              label: "Sarawak",
+              data: datasets.map((d) => d["Sarawak"]),
+              backgroundColor: "rgba(75, 192, 192, 0.5)",
+            },
+          ],
+        },
+        options: {
+          responsive: true,
+          plugins: {
+            title: {
+              display: true,
+              text: "Monthly Electricity Emissions by Region",
+            },
+          },
+        },
+      });
+    },
+
     loadFromLocalStorage() {
-      const savedData = localStorage.getItem("electricityData");
-      return savedData ? JSON.parse(savedData) : null;
+      const savedData = JSON.parse(
+        localStorage.getItem("electricityData") || "{}"
+      );
+      return savedData;
     },
 
     saveToLocalStorage() {
@@ -229,6 +307,7 @@ export default {
           overallTotalEmission: this.overallTotalEmission,
         })
       );
+      this.data = JSON.parse(localStorage.getItem("electricityData") || "{}");
     },
 
     addRow() {
@@ -302,6 +381,10 @@ export default {
         (sum, emission) => sum + emission,
         0
       );
+    },
+
+    handleUpdate() {
+      this.createElectricityChart();
     },
   },
 
