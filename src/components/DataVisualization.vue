@@ -178,12 +178,23 @@ export default {
     createElectricityChart(data) {
       // console.log(data);
       const ctx = this.$refs.electricityChart;
-      if (!data.emissionsByRegion) return;
 
-      const datasets = this.months.map((month, index) => ({
-        month,
-        ...data.emissionsByRegion[index],
-      }));
+      // const datasets = this.months.map((month, index) => ({
+      //   month,
+      //   ...data.emissionsByRegion[index],
+      // }));
+
+      const datasets = !data.emissionsByRegion
+        ? this.months.map((month) => ({
+            month,
+            "Peninsular Malaysia": 0,
+            Sabah: 0,
+            Sarawak: 0,
+          }))
+        : this.months.map((month, index) => ({
+            month,
+            ...this.data.emissionsByRegion[index],
+          }));
 
       this.charts.electricity = new Chart(ctx, {
         type: "bar",
