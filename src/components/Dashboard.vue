@@ -87,7 +87,7 @@ export default {
   },
   methods: {
     buttonClass(view) {
-      console.log(view);
+      // console.log(view);
       return {
         " active": this.currentView === view,
         "": this.currentView !== view,

@@ -1,7 +1,7 @@
 <template>
   <div class="p-6 mx-auto">
     <!-- Mobile Combustion Charts -->
-    <div class="bg-white p-4 rounded-lg shadow">
+    <div class="p-4 rounded-lg shadow">
       <div class="flex justify-between items-center mb-4">
         <h2 class="text-xl font-semibold">Electricity Consumption by Region</h2>
         <button
@@ -264,17 +264,17 @@ export default {
             {
               label: "Peninsular Malaysia",
               data: datasets.map((d) => d["Peninsular Malaysia"]),
-              backgroundColor: "rgba(255, 99, 132, 0.5)",
+              backgroundColor: "rgba(255, 99, 132)",
             },
             {
               label: "Sabah",
               data: datasets.map((d) => d["Sabah"]),
-              backgroundColor: "rgba(54, 162, 235, 0.5)",
+              backgroundColor: "rgba(54, 162, 235)",
             },
             {
               label: "Sarawak",
               data: datasets.map((d) => d["Sarawak"]),
-              backgroundColor: "rgba(75, 192, 192, 0.5)",
+              backgroundColor: "rgba(75, 192, 192)",
             },
           ],
         },
@@ -284,6 +284,36 @@ export default {
             title: {
               display: true,
               text: "Monthly Electricity Emissions by Region",
+              color: "white",
+            },
+            legend: {
+              position: "top",
+              labels: {
+                font: {
+                  size: 14,
+                },
+                color: "white",
+              },
+            },
+          },
+          scales: {
+            x: {
+              beginAtZero: true,
+              grid: {
+                color: "rgba(255, 255, 255, 0.5)",
+              },
+              ticks: {
+                color: "white",
+              },
+            },
+            y: {
+              beginAtZero: true,
+              grid: {
+                color: "rgba(255, 255, 255, 0.5)",
+              },
+              ticks: {
+                color: "white",
+              },
             },
           },
         },
@@ -291,10 +321,8 @@ export default {
     },
 
     loadFromLocalStorage() {
-      const savedData = JSON.parse(
-        localStorage.getItem("electricityData") || "{}"
-      );
-      return savedData;
+      const savedData = localStorage.getItem("electricityData");
+      return savedData ? JSON.parse(savedData) : null;
     },
 
     saveToLocalStorage() {

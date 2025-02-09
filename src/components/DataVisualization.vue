@@ -1,36 +1,11 @@
 <template>
   <div class="p-6">
-    <div class="grid grid-cols-2 gap-6">
-      <!-- Stationary Combustion Charts -->
-      <div className="bg-white p-4 rounded-lg shadow">
-        <h2 className="text-xl font-semibold mb-4">
-          Stationary Combustion Emissions
-        </h2>
-        <canvas ref="stationaryChart"></canvas>
+    <div class="p-4 rounded-lg shadow">
+      <div class="flex justify-between items-center mb-4">
+        <h2 class="text-xl font-semibold">Overall Emissions</h2>
       </div>
-
-      <!-- Mobile Combustion Charts -->
-      <div className="bg-white p-4 rounded-lg shadow">
-        <h2 className="text-xl font-semibold mb-4">
-          Mobile Combustion Emissions
-        </h2>
-        <canvas ref="mobileChart"></canvas>
-      </div>
-
-      <!-- Electricity Consumption -->
-      <div className="bg-white p-4 rounded-lg shadow">
-        <h2 className="text-xl font-semibold mb-4">
-          Electricity Consumption by Region
-        </h2>
-        <canvas ref="electricityChart"></canvas>
-      </div>
-
-      <!-- Fire Extinguisher Emissions -->
-      <div className="bg-white p-4 rounded-lg shadow">
-        <h2 className="text-xl font-semibold mb-4">
-          Fire Extinguisher Emissions
-        </h2>
-        <canvas ref="fireExtChart"></canvas>
+      <div class="flex justify-center items-center h-svh">
+        <canvas ref="overallChart"></canvas>
       </div>
     </div>
   </div>
@@ -43,20 +18,6 @@ export default {
   name: "DataVisualization",
   data() {
     return {
-      months: [
-        "Jan",
-        "Feb",
-        "Mar",
-        "Apr",
-        "May",
-        "Jun",
-        "Jul",
-        "Aug",
-        "Sep",
-        "Oct",
-        "Nov",
-        "Dec",
-      ],
       charts: {},
     };
   },
@@ -80,11 +41,9 @@ export default {
         localStorage.getItem("mobileCombustionSums") || "{}"
       );
 
-      console.log(localStorage.getItem("electricityData"));
       const electricityData = JSON.parse(
         localStorage.getItem("electricityData") || "{}"
       );
-      console.log(electricityData);
 
       const fireExtData = JSON.parse(
         localStorage.getItem("fugitiveEmissionsData") || "[]"
@@ -93,185 +52,65 @@ export default {
         localStorage.getItem("fugitiveEmissionsSums") || "{}"
       );
 
-      this.createStationaryChart(stationaryData);
-      this.createMobileChart(mobileData);
-      this.createElectricityChart(electricityData);
-      this.createFireExtChart(fireExtData);
-    },
-
-    createStationaryChart(data) {
-      const ctx = this.$refs.stationaryChart;
-      this.charts.stationary = new Chart(ctx, {
-        type: "line",
-        data: {
-          labels: this.months,
-          datasets: [
-            {
-              label: "Petrol CO2eq",
-              data: data.map((row) => row.petrolkgCO2eq),
-              borderColor: "rgb(255, 99, 132)",
-              tension: 0.1,
-            },
-            {
-              label: "Diesel CO2eq",
-              data: data.map((row) => row.dieselkgCO2eq),
-              borderColor: "rgb(54, 162, 235)",
-              tension: 0.1,
-            },
-            {
-              label: "LPG CO2eq",
-              data: data.map((row) => row.lpgkgCO2eq),
-              borderColor: "rgb(75, 192, 192)",
-              tension: 0.1,
-            },
-            {
-              label: "Natural Gas CO2eq",
-              data: data.map((row) => row.naturalGaskgCO2eq),
-              borderColor: "rgb(153, 102, 255)",
-              tension: 0.1,
-            },
-          ],
-        },
-        options: {
-          responsive: true,
-          plugins: {
-            title: {
-              display: true,
-              text: "Monthly Emissions by Fuel Type",
-            },
+      const config = {
+        labels: [
+          "Stationary Combustion Emission",
+          "Mobile Combustion Emission",
+          "Fugitive Emissons",
+          "Electricity Emissons",
+        ],
+        datasets: [
+          {
+            label: "Dataset 1",
+            data: [
+              stationarySums.total.kgCO2eq,
+              mobileSums.total.kgCO2eq,
+              fireExtSums.total.emissions,
+              electricityData.overallTotalEmission,
+            ],
+            backgroundColor: [
+              "rgb(75, 192, 192)", // Stationary Emissions
+              "rgb(153, 102, 255)", // Mobile Emissions
+              "rgb(255, 159, 64)", // Fire Extinguisher Emissions
+              "rgb(255, 205, 86)", // Electricity Emissions
+            ],
           },
-        },
-      });
-    },
+        ],
+      };
 
-    createMobileChart(data) {
-      const ctx = this.$refs.mobileChart;
-      this.charts.mobile = new Chart(ctx, {
-        type: "bar",
-        data: {
-          labels: this.months,
-          datasets: [
-            {
-              label: "Petrol CO2eq",
-              data: data.map((row) => row.petrolkgCO2eq),
-              backgroundColor: "rgba(255, 99, 132, 0.5)",
-            },
-            {
-              label: "Diesel CO2eq",
-              data: data.map((row) => row.dieselkgCO2eq),
-              backgroundColor: "rgba(54, 162, 235, 0.5)",
-            },
-          ],
-        },
+      this.createOverallPieChart(config);
+    },
+    createOverallPieChart(exampleConfig) {
+      if (this.charts.overall) {
+        this.charts.overall.destroy();
+      }
+      const ctx = this.$refs.overallChart;
+      this.charts.overall = new Chart(ctx, {
+        type: "pie",
+        data: exampleConfig,
         options: {
           responsive: true,
+          maintainAspectRatio: true,
           plugins: {
-            title: {
-              display: true,
-              text: "Monthly Mobile Emissions",
-            },
-          },
-        },
-      });
-    },
-
-    createElectricityChart(data) {
-      // console.log(data);
-      const ctx = this.$refs.electricityChart;
-
-      // const datasets = this.months.map((month, index) => ({
-      //   month,
-      //   ...data.emissionsByRegion[index],
-      // }));
-
-      const datasets = !data.emissionsByRegion
-        ? this.months.map((month) => ({
-            month,
-            "Peninsular Malaysia": 0,
-            Sabah: 0,
-            Sarawak: 0,
-          }))
-        : this.months.map((month, index) => ({
-            month,
-            ...this.data.emissionsByRegion[index],
-          }));
-
-      this.charts.electricity = new Chart(ctx, {
-        type: "bar",
-        data: {
-          labels: this.months,
-          datasets: [
-            {
-              label: "Peninsular Malaysia",
-              data: datasets.map((d) => d["Peninsular Malaysia"]),
-              backgroundColor: "rgba(255, 99, 132, 0.5)",
-            },
-            {
-              label: "Sabah",
-              data: datasets.map((d) => d["Sabah"]),
-              backgroundColor: "rgba(54, 162, 235, 0.5)",
-            },
-            {
-              label: "Sarawak",
-              data: datasets.map((d) => d["Sarawak"]),
-              backgroundColor: "rgba(75, 192, 192, 0.5)",
-            },
-          ],
-        },
-        options: {
-          responsive: true,
-          plugins: {
-            title: {
-              display: true,
-              text: "Monthly Electricity Emissions by Region",
-            },
-          },
-        },
-      });
-    },
-
-    createFireExtChart(data) {
-      const ctx = this.$refs.fireExtChart;
-      this.charts.fireExt = new Chart(ctx, {
-        type: "line",
-        data: {
-          labels: this.months,
-          datasets: [
-            {
-              label: "Fixed CO2",
-              data: data.map((row) => row.emissionsFixedCO2),
-              borderColor: "rgb(255, 99, 132)",
-              tension: 0.1,
-            },
-            {
-              label: "Fixed HFC",
-              data: data.map((row) => row.emissionsHFC),
-              borderColor: "rgb(54, 162, 235)",
-              tension: 0.1,
-            },
-            {
-              label: "Portable CO2",
-              data: data.map((row) => row.emissionsPortableCO2),
-              borderColor: "rgb(75, 192, 192)",
-              tension: 0.1,
-            },
-          ],
-        },
-        options: {
-          responsive: true,
-          plugins: {
-            title: {
-              display: true,
-              text: "Monthly Fire Extinguisher Emissions",
+            legend: {
+              position: "top",
+              align: "start",
+              labels: {
+                font: {
+                  size: 14,
+                },
+                color: "white",
+              },
             },
           },
         },
       });
     },
   },
+
   beforeDestroy() {
     // Cleanup charts
-    Object.values(this.charts).forEach((chart) => chart.destroy());
+    // Object.values(this.charts).forEach((chart) => chart.destroy());
   },
 };
 </script>

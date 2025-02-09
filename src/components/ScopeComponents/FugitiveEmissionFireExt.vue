@@ -1,7 +1,7 @@
 <template>
   <div class="py-5">
     <!-- Fire Extinguisher Emissions Charts -->
-    <div class="bg-white p-4 rounded-lg shadow">
+    <div class="p-4 rounded-lg shadow">
       <div class="flex justify-between items-center mb-4">
         <h2 class="text-xl font-semibold">Fire Extinguisher Emissions</h2>
         <button
@@ -473,18 +473,21 @@ export default {
               label: "Fixed CO2",
               data: this.tableData.map((row) => row.emissionsFixedCO2),
               borderColor: "rgb(255, 99, 132)",
+              backgroundColor: "rgb(255, 99, 132, 0.5)",
               tension: 0.1,
             },
             {
               label: "Fixed HFC",
               data: this.tableData.map((row) => row.emissionsHFC),
               borderColor: "rgb(54, 162, 235)",
+              backgroundColor: "rgb(54, 162, 235, 0.5)",
               tension: 0.1,
             },
             {
               label: "Portable CO2",
               data: this.tableData.map((row) => row.emissionsPortableCO2),
               borderColor: "rgb(75, 192, 192)",
+              backgroundColor: "rgb(75, 192, 192, 0.5)",
               tension: 0.1,
             },
           ],
@@ -495,6 +498,36 @@ export default {
             title: {
               display: true,
               text: "Monthly Fire Extinguisher Emissions",
+              color: "white",
+            },
+            legend: {
+              position: "top",
+              labels: {
+                font: {
+                  size: 14,
+                },
+                color: "white",
+              },
+            },
+          },
+          scales: {
+            x: {
+              beginAtZero: true,
+              grid: {
+                color: "rgba(255, 255, 255, 0.5)",
+              },
+              ticks: {
+                color: "white",
+              },
+            },
+            y: {
+              beginAtZero: true,
+              grid: {
+                color: "rgba(255, 255, 255, 0.5)",
+              },
+              ticks: {
+                color: "white",
+              },
             },
           },
         },

@@ -1,7 +1,7 @@
 <template>
   <div class="py-5">
     <!-- Mobile Combustion Charts -->
-    <div class="bg-white p-4 rounded-lg shadow">
+    <div class="p-4 rounded-lg shadow">
       <div class="flex justify-between items-center mb-4">
         <h2 class="text-xl font-semibold">Mobile Combustion Emissions</h2>
         <button
@@ -681,12 +681,12 @@ export default {
             {
               label: "Petrol CO2eq",
               data: this.tableData.map((row) => row.petrolkgCO2eq),
-              backgroundColor: "rgba(255, 99, 132, 0.5)",
+              backgroundColor: "rgba(255, 99, 132, 1)",
             },
             {
               label: "Diesel CO2eq",
               data: this.tableData.map((row) => row.dieselkgCO2eq),
-              backgroundColor: "rgba(54, 162, 235, 0.5)",
+              backgroundColor: "rgba(54, 162, 235, 1)",
             },
           ],
         },
@@ -696,6 +696,36 @@ export default {
             title: {
               display: true,
               text: "Monthly Mobile Emissions",
+              color: "white",
+            },
+            legend: {
+              position: "top",
+              labels: {
+                font: {
+                  size: 14,
+                },
+                color: "white",
+              },
+            },
+          },
+          scales: {
+            x: {
+              beginAtZero: true,
+              grid: {
+                color: "rgba(255, 255, 255, 0.5)",
+              },
+              ticks: {
+                color: "white",
+              },
+            },
+            y: {
+              beginAtZero: true,
+              grid: {
+                color: "rgba(255, 255, 255, 0.5)",
+              },
+              ticks: {
+                color: "white",
+              },
             },
           },
         },

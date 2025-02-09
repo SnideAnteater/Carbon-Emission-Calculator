@@ -1,7 +1,7 @@
 <template>
   <div class="py-5">
     <!-- Stationary Combustion Charts -->
-    <div class="bg-white p-4 rounded-lg shadow">
+    <div class="p-4 rounded-lg shadow">
       <div class="flex justify-between items-center mb-4">
         <h2 class="text-xl font-semibold">Stationary Combustion Emissions</h2>
         <button
@@ -882,14 +882,36 @@ export default {
             title: {
               display: true,
               text: "Monthly Emissions by Fuel Type",
+              color: "white",
             },
             legend: {
               position: "top",
+              labels: {
+                font: {
+                  size: 14,
+                },
+                color: "white",
+              },
             },
           },
           scales: {
+            x: {
+              beginAtZero: true,
+              grid: {
+                color: "rgba(255, 255, 255, 0.5)",
+              },
+              ticks: {
+                color: "white",
+              },
+            },
             y: {
               beginAtZero: true,
+              grid: {
+                color: "rgba(255, 255, 255, 0.5)",
+              },
+              ticks: {
+                color: "white",
+              },
             },
           },
         },
@@ -901,6 +923,7 @@ export default {
         "stationaryCombustionData",
         JSON.stringify(this.tableData)
       );
+      console.log(this.sums);
       localStorage.setItem(
         "stationaryCombustionSums",
         JSON.stringify(this.sums)
