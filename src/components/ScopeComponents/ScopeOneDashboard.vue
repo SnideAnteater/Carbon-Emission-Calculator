@@ -18,7 +18,7 @@
       @click="currentView = 'FugitiveEmissionFireExt'"
       :class="buttonClass('FugitiveEmissionFireExt')"
     >
-      Scope 1 - Fugitive Emission (Fire Extinguisher Used)
+      Scope 1 - Fugitive Emission
     </button>
   </div>
   <!-- Display Selected Component -->
