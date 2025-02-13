@@ -3,27 +3,27 @@
     <div class="grid justify-items-center mb-4">
       <h2 class="text-3xl font-semibold">Overall Emissions</h2>
     </div>
-    <div class="grid grid-cols-2">
-      <div class="p-4 rounded-lg">
+    <div class="grid grid-cols-2 gap-4">
+      <div class="p-4 rounded-lg shadow shadow-black">
         <div class="flex justify-center items-center h-96">
           <canvas ref="overallPieChart"></canvas>
         </div>
       </div>
-      <div class="p-4 rounded-lg">
+      <div class="p-4 rounded-lg shadow shadow-black">
         <div class="flex justify-center items-center h-96">
           <canvas ref="overallBarChart"></canvas>
         </div>
       </div>
     </div>
-    <div class="grid grid-cols">
-      <div class="p-4 rounded-lg">
+    <div class="grid grid-cols mt-4">
+      <div class="p-4 rounded-lg shadow shadow-black">
         <div class="flex justify-center items-center">
           <canvas ref="scopeOneLineChart"></canvas>
         </div>
       </div>
     </div>
-    <div class="grid grid-cols">
-      <div class="p-4 rounded-lg">
+    <div class="grid grid-cols mt-4">
+      <div class="p-4 rounded-lg shadow shadow-black">
         <div class="flex justify-center items-center">
           <canvas ref="scopeTwoLineChart"></canvas>
         </div>
@@ -145,6 +145,7 @@ export default {
       this.createScopeOneLineChart(scopeOneLineConfig);
       this.createScopeTwoLineChart(scopeTwoLineConfig);
     },
+
     createOverallPieChart(pieChartConfig) {
       if (this.charts.overallPie) {
         this.charts.overallPie.destroy();
@@ -157,8 +158,17 @@ export default {
           responsive: true,
           maintainAspectRatio: true,
           plugins: {
+            title: {
+              display: true,
+              text: "Total Emissions by Scope",
+              color: "white",
+              align: "start",
+              font: {
+                size: 16,
+              },
+            },
             legend: {
-              position: "top",
+              position: "bottom",
               align: "center",
               labels: {
                 font: {
@@ -184,8 +194,17 @@ export default {
           responsive: true,
           maintainAspectRatio: true,
           plugins: {
+            title: {
+              display: true,
+              text: "Total Emissions by Month",
+              color: "white",
+              align: "start",
+              font: {
+                size: 16,
+              },
+            },
             legend: {
-              position: "top",
+              position: "bottom",
               align: "center",
               labels: {
                 font: {
@@ -231,8 +250,21 @@ export default {
           responsive: true,
           maintainAspectRatio: true,
           plugins: {
+            title: {
+              display: true,
+              text: "Scope 1 Emissions by Month",
+              color: "white",
+              align: "start",
+              padding: {
+                bottom: 25,
+                top: 10,
+              },
+              font: {
+                size: 16,
+              },
+            },
             legend: {
-              position: "top",
+              position: "bottom",
               align: "center",
               labels: {
                 font: {
@@ -265,6 +297,7 @@ export default {
         },
       });
     },
+
     createScopeTwoLineChart(scopeOneLineChart) {
       if (this.charts.scopeTwoLine) {
         this.charts.scopeTwoLine.destroy();
@@ -277,8 +310,21 @@ export default {
           responsive: true,
           maintainAspectRatio: true,
           plugins: {
+            title: {
+              display: true,
+              text: "Scope 2 Emissions by Month",
+              color: "white",
+              align: "start",
+              padding: {
+                bottom: 25,
+                top: 10,
+              },
+              font: {
+                size: 16,
+              },
+            },
             legend: {
-              position: "top",
+              position: "bottom",
               align: "center",
               labels: {
                 font: {
