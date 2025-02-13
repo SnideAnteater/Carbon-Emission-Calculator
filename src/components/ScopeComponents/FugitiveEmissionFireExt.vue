@@ -1,7 +1,7 @@
 <template>
   <div class="py-5">
     <!-- Fire Extinguisher Emissions Charts -->
-    <div class="p-4 rounded-lg shadow">
+    <div class="p-4 rounded-lg shadow shadow-black">
       <div class="flex justify-between items-center mb-4">
         <h2 class="text-xl font-semibold">Fire Extinguisher Emissions</h2>
         <button

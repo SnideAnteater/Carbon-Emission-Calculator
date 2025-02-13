@@ -1,7 +1,7 @@
 <template>
   <div class="p-6 mx-auto">
     <!-- Mobile Combustion Charts -->
-    <div class="p-4 rounded-lg shadow">
+    <div class="p-4 rounded-lg shadow shadow-black mb-4">
       <div class="flex justify-between items-center mb-4">
         <h2 class="text-xl font-semibold">Electricity Consumption by Region</h2>
         <button
